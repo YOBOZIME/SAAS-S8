@@ -8,16 +8,25 @@ const Entreprise = sequelize.define('Entreprise', {
     allowNull: false
   },
   secteur: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false
   },
   adresse: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false
   },
   siteWeb: {
     type: DataTypes.STRING
   },
   telephone: {
     type: DataTypes.STRING
+  },
+  hr_email:{
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  description:{
+    type: DataTypes.TEXT
   }
 });
 

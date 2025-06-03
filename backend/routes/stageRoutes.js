@@ -3,9 +3,10 @@ const router = express.Router();
 const controller = require('../controllers/stageController');
 const verifyToken = require('../middlewares/verifyToken');
 const checkRole = require('../middlewares/checkRole');
+const {validateStageData} = require('../middlewares/validationData')
 
-router.post('/', verifyToken, checkRole(['entreprise']), controller.create);
-router.put('/:id', verifyToken, checkRole(['entreprise']), controller.update);
-router.delete('/:id', verifyToken, checkRole(['entreprise']), controller.remove);
+router.post('/', verifyToken,validateStageData, checkRole(['entreprise']), controller.createStage);
+router.put('/:id', verifyToken, checkRole(['entreprise']), controller.updateStage);
+router.delete('/:id', verifyToken, checkRole(['entreprise']), controller.removeStage);
 
 module.exports = router;

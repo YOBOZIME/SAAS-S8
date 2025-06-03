@@ -1,6 +1,7 @@
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { User , Etudiant, Entreprise } = require('../models');
+require('dotenv').config();
 
 exports.register = async (req, res) => {
   try {
@@ -11,14 +12,13 @@ exports.register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(motdepasse, 10);
 
-    const newUser = await User.create({
-      nom,
-      prenom,
-      email,
-      motdepasse: hashedPassword,
-      role
-    });
+    const newUser = await User.create({nom,prenom,email,motdepasse: hashedPassword,role});
 
+    if(role ==='etudiant'){
+      await Etudiant.create({userId:user.id,niveau,filiere});
+    }else if (role === 'entreprise'){
+      await Entreprise.create({userId: user.id})
+    }
     res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser });
   } catch (err) {
     res.status(500).json({ message: 'Erreur serveur', error: err.message });

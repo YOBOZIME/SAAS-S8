@@ -11,20 +11,27 @@ const Stage = sequelize.define('Stage', {
     type: DataTypes.TEXT
   },
   domaine: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false
   },
   lieu: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false
   },
   dateDebut: {
-    type: DataTypes.DATE
+    type: DataTypes.DATE,
+    allowNull: false
   },
   dateFin: {
-    type: DataTypes.DATE
+    type: DataTypes.DATE,
+    allowNull: false
   },
   estDisponible: {
     type: DataTypes.BOOLEAN,
     defaultValue: true
+  },
+  commentaire: {
+    type: DataTypes.TEXT
   }
 });
 

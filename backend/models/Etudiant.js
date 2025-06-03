@@ -12,7 +12,8 @@ const Etudiant = sequelize.define('Etudiant', {
     allowNull: false
   },
   cv: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false
   },
   lettreMotivation: {
     type: DataTypes.STRING

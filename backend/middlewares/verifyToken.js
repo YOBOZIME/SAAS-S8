@@ -14,7 +14,11 @@ const verifyToken = (req, res, next) => {
     req.user = decoded; // contient id et role
     next();
   } catch (err) {
-    res.status(403).json({ message: 'Token invalide ou expiré' });
+    const msg =
+    err.name === 'TokenExpiredError'
+      ? 'Token expiré'
+      : 'Token invalide';
+  res.status(403).json({ message: msg });
   }
 };
 

@@ -1,6 +1,6 @@
-const Entreprise = require('../models/Entreprise');
+const {Entreprise ,Stage , Etudiant , Candidature} = require('../models/Entreprise');
 
-exports.create = async (req, res) => {
+exports.createEntreprise = async (req, res) => {
   try {
     const { nomSociete, secteur, adresse, siteWeb, telephone, userId } = req.body;
 

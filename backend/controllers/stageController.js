@@ -1,6 +1,6 @@
 const Stage = require('../models/Stage');
 
-exports.create = async (req, res) => {
+exports.createStage = async (req, res) => {
   try {
     const { titre, description, domaine, lieu, dateDebut, dateFin, entrepriseId } = req.body;
 
@@ -20,7 +20,7 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.update = async (req, res) => {
+exports.updateStage = async (req, res) => {
   try {
     const { id } = req.params;
     const stage = await Stage.findByPk(id);
@@ -33,7 +33,16 @@ exports.update = async (req, res) => {
   }
 };
 
-exports.remove = async (req, res) => {
+exports.getAllStages = async (req, res) => {
+  try {
+    const stages = await Stage.findAll();
+    res.json(stages);
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', error: err.message });
+  }
+};
+
+exports.removeStage = async (req, res) => {
   try {
     const { id } = req.params;
     const stage = await Stage.findByPk(id);
