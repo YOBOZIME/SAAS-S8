@@ -14,10 +14,11 @@ exports.register = async (req, res) => {
 
     const newUser = await User.create({nom,prenom,email,motdepasse: hashedPassword,role});
 
-    if(role ==='etudiant'){
-      await Etudiant.create({userId:user.id,niveau,filiere});
-    }else if (role === 'entreprise'){
-      await Entreprise.create({userId: user.id})
+    if(role === 'etudiant'){
+      const { niveau, filiere } = req.body;
+      await Etudiant.create({ userId: newUser.id, niveau, filiere });
+    } else if (role === 'entreprise'){
+      await Entreprise.create({ userId: newUser.id });
     }
     res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser });
   } catch (err) {
@@ -26,6 +27,7 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  console.log("🔁 login route hit");
   try {
     const { email, motdepasse } = req.body;
 

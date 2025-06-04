@@ -13,7 +13,8 @@ const validateStageData = (req, res, next) => {
 };
 
 const validateUserRegistration = (req, res, next) => {
-  const { nom, prenom, email, motdepasse, role } = req.body;
+  console.log("🔍 Corps reçu dans validateUserRegistration :", req.body);
+  const { nom, prenom, email, motdepasse, role, niveau, filiere } = req.body;
 
   if (!nom || !prenom || !email || !motdepasse || !role) {
     return res.status(400).json({ message: 'Tous les champs utilisateur sont requis.' });
@@ -24,8 +25,15 @@ const validateUserRegistration = (req, res, next) => {
     return res.status(400).json({ message: 'Rôle invalide.' });
   }
 
+  if (role === 'etudiant') {
+    if (!niveau || !filiere) {
+      return res.status(400).json({ message: 'Les champs niveau et filière sont requis pour un étudiant.' });
+    }
+  }
+
   next();
 };
+
 
 // Validator pour l'espace étudiant
 const validateEtudiantData = (req, res, next) => {

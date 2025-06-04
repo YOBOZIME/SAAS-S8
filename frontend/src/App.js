@@ -5,12 +5,14 @@ import EntrepriseDashboard from './pages/EntrepriseDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Unauthorized from './pages/Unauthorized';
 import PrivateRoute from './components/PrivateRoute';
+import Register from './pages/Register';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
         <Route path="/etudiant" element={

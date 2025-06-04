@@ -13,11 +13,12 @@ const Etudiant = sequelize.define('Etudiant', {
   },
   cv: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: true  // <--- modifié ici
   },
   lettreMotivation: {
-    type: DataTypes.STRING
-  }
+    type: DataTypes.STRING,
+    allowNull: true
+  }  
 });
 
 // Association : un étudiant est un utilisateur

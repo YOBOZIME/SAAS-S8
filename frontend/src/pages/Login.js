@@ -11,13 +11,16 @@ const Login = () => {
     e.preventDefault();
     try {
       const data = await login(email, password);
+      console.log("✅ Connexion réussie :", data);
       if (data.user.role === "etudiant") navigate("/etudiant");
       else if (data.user.role === "entreprise") navigate("/entreprise");
       else if (data.user.role === "admin") navigate("/admin");
     } catch (err) {
+      console.error("❌ Erreur de connexion :", err.response?.data || err.message);
       alert("Erreur de connexion !");
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit}>
