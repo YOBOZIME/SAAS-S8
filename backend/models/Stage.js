@@ -32,6 +32,14 @@ const Stage = sequelize.define('Stage', {
   },
   commentaire: {
     type: DataTypes.TEXT
+  },
+  status: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'en attente',
+    validate: {
+      isIn: [['en attente', 'validé', 'refusé']]
+    }
   }
 });
 

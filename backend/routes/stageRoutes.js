@@ -8,5 +8,7 @@ const {validateStageData} = require('../middlewares/validationData')
 router.post('/', verifyToken,validateStageData, checkRole(['entreprise']), controller.createStage);
 router.put('/:id', verifyToken, checkRole(['entreprise']), controller.updateStage);
 router.delete('/:id', verifyToken, checkRole(['entreprise']), controller.removeStage);
+router.get('/', controller.getAllStages);
+
 
 module.exports = router;

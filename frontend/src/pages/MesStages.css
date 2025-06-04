@@ -1,0 +1,79 @@
+.mes-stages-container {
+    padding: 40px;
+    background-color: #f4ecdb;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .mes-stages-container h2 {
+    color: #1c274c;
+    margin-bottom: 20px;
+  }
+  
+  .stage-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border-left: 5px solid #1c274c;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .stage-card:hover {
+    box-shadow: 0 6px 18px rgba(28, 39, 76, 0.15);
+  }
+  
+  .stage-card h3 {
+    margin: 0 0 10px;
+    color: #1c274c;
+  }
+  
+  .stage-card p {
+    margin: 6px 0;
+    color: #333;
+  }
+  
+  .stage-card p strong {
+    color: #000;
+  }
+  
+  .stage-card .actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .stage-card button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .stage-card button.edit {
+    background-color: #9baab3;
+    color: white;
+  }
+  
+  .stage-card button.edit:hover {
+    background-color: #7e8c94;
+  }
+  
+  .stage-card button.delete {
+    background-color: #d9534f;
+    color: white;
+  }
+  
+  .stage-card button.delete:hover {
+    background-color: #c9302c;
+  }
+  
+  .no-stages {
+    color: #555;
+    font-style: italic;
+    margin-top: 40px;
+  }
+  

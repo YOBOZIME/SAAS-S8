@@ -1,0 +1,93 @@
+.etudiant-dashboard {
+    display: flex;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f8f8;
+  }
+  
+  .offre-liste {
+    width: 40%;
+    overflow-y: auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+  }
+  
+  .offre-item {
+    background-color: #f4ecdb;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+  
+  .offre-item:hover {
+    border-color: #1c274c;
+    background-color: #f1e8ce;
+  }
+  
+  .offre-item h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #1c274c;
+  }
+  
+  .offre-item p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .details-panel {
+    width: 60%;
+    padding: 24px;
+    background-color: #ffffff;
+    overflow-y: auto;
+  }
+  
+  .details-panel h2 {
+    color: #1c274c;
+    margin-bottom: 10px;
+  }
+  
+  .details-panel .entreprise {
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 8px;
+  }
+  
+  .details-panel p {
+    font-size: 15px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  
+  .details-panel .missions,
+  .details-panel .profil {
+    margin-top: 20px;
+  }
+  
+  .details-panel ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  
+  .details-panel button {
+    background-color: #1c274c;
+    color: #f4ecdb;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .details-panel button:hover {
+    background-color: #16203e;
+  }
+  

@@ -1,0 +1,42 @@
+.admin-dashboard {
+    padding: 30px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .admin-dashboard h2 {
+    color: #1C274C;
+  }
+  
+  .stats {
+    background-color: #EFE7DA;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  }
+  
+  table th, table td {
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  button {
+    background-color: #1C274C;
+    color: #EFE7DA;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #16203E;
+  }
+  

@@ -1,16 +1,17 @@
 const validateStageData = (req, res, next) => {
-  const { titre, domaine, lieu, dateDébut, dateFin } = req.body;
+  const { titre, domaine, lieu, dateDebut, dateFin, description } = req.body;
 
-  if (!titre || !domaine || !lieu || !dateDébut || !dateFin) {
+  if (!titre || !domaine || !lieu || !dateDebut || !dateFin || !description) {
     return res.status(400).json({ message: 'Tous les champs du stage sont requis.' });
   }
 
-  if (new Date(dateDébut) > new Date(dateFin)) {
+  if (new Date(dateDebut) > new Date(dateFin)) {
     return res.status(400).json({ message: 'La date de début doit être avant la date de fin.' });
   }
 
   next();
 };
+
 
 const validateUserRegistration = (req, res, next) => {
   console.log("🔍 Corps reçu dans validateUserRegistration :", req.body);

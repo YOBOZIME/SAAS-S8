@@ -6,6 +6,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import Unauthorized from './pages/Unauthorized';
 import PrivateRoute from './components/PrivateRoute';
 import Register from './pages/Register';
+import CreateStage from './pages/CreateStage';
+import MesStages from './pages/MesStages';
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/creer-stage" element={<CreateStage />} />
+        <Route path="/mes-stages" element={<MesStages />} />
 
         <Route path="/etudiant" element={
           <PrivateRoute role="etudiant">

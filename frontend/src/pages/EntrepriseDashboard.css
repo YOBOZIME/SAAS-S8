@@ -1,81 +1,129 @@
+/* Conteneur global */
 .dashboard-container {
     font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
     background-color: #F4ECDB;
-    min-height: 100vh;
-    padding: 40px;
+    display: flex;
+    flex-direction: column;
   }
   
-  .dashboard-header {
+  /* Navbar */
+  .navbar {
+    background-color: #1C274C;
+    color: white;
+    padding: 16px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
   }
   
-  .dashboard-header h1 {
-    color: #1C274C;
-  }
-  
-  .logout-button {
-    background-color: #1C274C;
-    color: #F4ECDB;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+  .navbar-logo {
+    font-size: 22px;
     font-weight: bold;
   }
   
-  .logout-button:hover {
-    background-color: #16203E;
-  }
-  
-  .dashboard-section h2 {
+  .navbar-actions button {
+    margin-left: 16px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #F4ECDB;
     color: #1C274C;
-    margin-bottom: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
   }
   
-  .card-grid {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  .navbar-actions button:hover {
+    background-color: #d9cfb7;
   }
   
-  .card {
-    background-color: #fff;
-    border: 1px solid #A79383;
-    border-radius: 12px;
+  /* Corps principal */
+  .main-content {
+    display: flex;
+    padding: 24px 32px;
+    gap: 32px;
+  }
+  
+  /* Fil d'actualité */
+  .feed {
+    flex: 3;
+    background-color: white;
     padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: transform 0.2s ease;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   }
   
-  .card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .card h3 {
-    margin-bottom: 10px;
+  .feed h3 {
+    margin-bottom: 16px;
     color: #1C274C;
   }
   
-  .card p {
-    font-size: 14px;
-    margin-bottom: 16px;
-    color: #444;
+  .post {
+    padding: 16px;
+    border-bottom: 1px solid #E5E5E5;
   }
   
-  .card button {
-    background-color: #1C274C;
-    color: #F4ECDB;
+  .post:last-child {
+    border-bottom: none;
+  }
+  
+  .post strong {
+    color: #B29079;
+  }
+  
+  .post p {
+    margin: 8px 0;
+  }
+  
+  .post small {
+    color: gray;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+  
+  .sidebar h4 {
+    color: #1C274C;
+    margin-bottom: 12px;
+  }
+  
+  .btn-ajouter {
+    margin-top: 12px;
+    padding: 10px 14px;
+    width: 100%;
     border: none;
-    padding: 10px 16px;
     border-radius: 8px;
+    background-color: #B29079;
+    color: white;
     font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s ease;
   }
   
-  .card button:hover {
+  .btn-ajouter:hover {
+    background-color: #a27863;
+  }
+
+  .nav-button {
+    background-color: #1C274C;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 0 8px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-button:hover {
     background-color: #16203E;
   }
   

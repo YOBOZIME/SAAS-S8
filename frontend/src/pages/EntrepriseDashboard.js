@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { logout } from '../services/authService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './EntrepriseDashboard.css';
 
 const EntrepriseDashboard = () => {
@@ -11,41 +11,52 @@ const EntrepriseDashboard = () => {
     navigate('/login');
   };
 
+  const handleProfil = () => {
+    navigate('/entreprise/profil');
+  };
+
+  const posts = [
+    {
+      auteur: "Etudiant · Oussama",
+      contenu: "Je cherche un stage en développement web pour cet été.",
+      date: "Il y a 2 jours"
+    },
+    {
+      auteur: "Entreprise · TechSolutions",
+      contenu: "Nous recrutons un stagiaire en data science pour 3 mois. Envoyez-nous vos CVs !",
+      date: "Il y a 1 jour"
+    }
+  ];
+
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h1>Bienvenue sur votre espace entreprise</h1>
-        <button className="logout-button" onClick={handleLogout}>Se déconnecter</button>
-      </header>
-
-      <section className="dashboard-section">
-        <h2>Actions disponibles</h2>
-        <div className="card-grid">
-          <div className="card">
-            <h3>Publier une offre de stage</h3>
-            <p>Créez une nouvelle offre de stage pour attirer les étudiants.</p>
-            <button>Nouvelle offre</button>
-          </div>
-
-          <div className="card">
-            <h3>Consulter les candidatures</h3>
-            <p>Parcourez les candidatures reçues pour vos offres publiées.</p>
-            <button>Voir les candidatures</button>
-          </div>
-
-          <div className="card">
-            <h3>Gérer les offres</h3>
-            <p>Modifiez ou supprimez les offres de stage existantes.</p>
-            <button>Mes offres</button>
-          </div>
-
-          <div className="card">
-            <h3>Profil de l'entreprise</h3>
-            <p>Consultez ou mettez à jour les informations de votre société.</p>
-            <button>Mon profil</button>
-          </div>
+      <nav className="navbar">
+        <div className="navbar-logo">StageConnect</div>
+        <div className="navbar-actions">
+          <button onClick={handleProfil}>Mon Profil</button>
+          <Link to="/mes-stages" className="nav-button">Mes Offres</Link>
+          <button onClick={handleLogout}>Déconnexion</button>
         </div>
-      </section>
+      </nav>
+
+      <div className="main-content">
+        <div className="feed">
+          <h3>Fil d’actualité</h3>
+          {posts.map((post, index) => (
+            <div className="post" key={index}>
+              <strong>{post.auteur}</strong>
+              <p>{post.contenu}</p>
+              <small>{post.date}</small>
+            </div>
+          ))}
+        </div>
+
+        <div className="sidebar">
+          <h4>Suggestions</h4>
+          <p>Ajoutez un nouveau stage pour attirer des talents !</p>
+          <button className="btn-ajouter" onClick={() => navigate('/creer-stage')}>Publier une offre</button>
+        </div>
+      </div>
     </div>
   );
 };
