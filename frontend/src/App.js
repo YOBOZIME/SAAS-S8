@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import EtudiantDashboard from './pages/EtudiantDashboard';
 import EntrepriseDashboard from './pages/EntrepriseDashboard';
@@ -10,8 +10,9 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
-        
+
         <Route path="/etudiant" element={
           <PrivateRoute role="etudiant">
             <EtudiantDashboard />
