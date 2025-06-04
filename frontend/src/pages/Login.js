@@ -1,33 +1,62 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/authService';
+import './Login.css';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [credentials, setCredentials] = useState({
+    user_email: '',
+    user_password: ''
+  });
+
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await login(email, password);
+      const data = await login(credentials.user_email, credentials.user_password);
       console.log("✅ Connexion réussie :", data);
-      if (data.user.role === "etudiant") navigate("/etudiant");
-      else if (data.user.role === "entreprise") navigate("/entreprise");
-      else if (data.user.role === "admin") navigate("/admin");
+
+      const role = data.user.role;
+      if (role === "etudiant") navigate("/etudiant");
+      else if (role === "entreprise") navigate("/entreprise");
+      else if (role === "admin") navigate("/admin");
+
     } catch (err) {
       console.error("❌ Erreur de connexion :", err.response?.data || err.message);
       alert("Erreur de connexion !");
     }
   };
-  
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mot de passe" />
-      <button type="submit">Se connecter</button>
-    </form>
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleSubmit} autoComplete="off">
+        <h2>Connexion</h2>
+        <input
+          type="email"
+          name="user_email"
+          placeholder="Email"
+          value={credentials.user_email}
+          onChange={handleChange}
+          autoComplete="off"
+          required
+        />
+        <input
+          type="password"
+          name="user_password"
+          placeholder="Mot de passe"
+          value={credentials.user_password}
+          onChange={handleChange}
+          autoComplete="new-password"
+          required
+        />
+        <button type="submit">Se connecter</button>
+      </form>
+    </div>
   );
 };
 

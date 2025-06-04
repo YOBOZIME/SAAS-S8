@@ -17,7 +17,8 @@ exports.register = async (req, res) => {
     if (role === 'etudiant') {
       await Etudiant.create({ userId: newUser.id, niveau, filiere, cv: '', lettreMotivation: '' });
     } else if (role === 'entreprise') {
-      await Entreprise.create({ userId: newUser.id });
+      const { nomSociete, secteur, adresse, hr_email } = req.body;
+      await Entreprise.create({ userId: newUser.id, nomSociete, secteur, adresse, hr_email });
     }
 
     res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser });

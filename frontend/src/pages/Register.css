@@ -1,48 +1,65 @@
 .register-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: #f7f7f7;
-  }
-  
-  .register-form {
-    background: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    width: 350px;
-  }
-  
-  .register-form h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #2c3e50;
-  }
-  
-  .register-form input,
-  .register-form select {
-    margin-bottom: 15px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
-  
-  .register-form button {
-    padding: 12px;
-    background: #0056d2;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .register-form button:hover {
-    background: #0041a8;
-  }
-  
+  background-color: #F4ECDB; /* Beige clair */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.register-form {
+  background-color: white;
+  padding: 32px;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(28, 39, 76, 0.1);
+  width: 100%;
+  max-width: 480px;
+  font-family: 'Segoe UI', sans-serif;
+  border: 1px solid #A79383; /* Taupe */
+}
+
+.register-form h2 {
+  margin-bottom: 24px;
+  color: #1C274C; /* Bleu nuit */
+  text-align: center;
+}
+
+.register-form input,
+.register-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #9BAAB3; /* Bleu gris doux */
+  border-radius: 8px;
+  background-color: #F4ECDB; /* Beige clair */
+  font-size: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.register-form input:focus,
+.register-form select:focus {
+  border-color: #1C274C;
+  outline: none;
+}
+
+.register-form input:-webkit-autofill {
+  background-color: #F4ECDB !important;
+  -webkit-box-shadow: 0 0 0 30px #F4ECDB inset !important;
+  -webkit-text-fill-color: #333 !important;
+}
+
+.register-form button {
+  width: 100%;
+  padding: 14px;
+  background-color: #1C274C; /* Bleu nuit */
+  border: none;
+  color: #F4ECDB;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.register-form button:hover {
+  background-color: #16203E;
+}
