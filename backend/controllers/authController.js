@@ -5,26 +5,28 @@ require('dotenv').config();
 
 exports.register = async (req, res) => {
   try {
-    const { nom, prenom, email, motdepasse, role } = req.body;
+    const { nom, prenom, email, motdepasse, role, niveau, filiere } = req.body;
 
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) return res.status(400).json({ message: 'Email déjà utilisé' });
 
     const hashedPassword = await bcrypt.hash(motdepasse, 10);
 
-    const newUser = await User.create({nom,prenom,email,motdepasse: hashedPassword,role});
+    const newUser = await User.create({ nom, prenom, email, motdepasse: hashedPassword, role });
 
-    if(role === 'etudiant'){
-      const { niveau, filiere } = req.body;
-      await Etudiant.create({ userId: newUser.id, niveau, filiere });
-    } else if (role === 'entreprise'){
+    if (role === 'etudiant') {
+      await Etudiant.create({ userId: newUser.id, niveau, filiere, cv: '', lettreMotivation: '' });
+    } else if (role === 'entreprise') {
       await Entreprise.create({ userId: newUser.id });
     }
+
     res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser });
   } catch (err) {
+    console.error("Erreur dans register:", err); // Garde ce log
     res.status(500).json({ message: 'Erreur serveur', error: err.message });
   }
 };
+
 
 exports.login = async (req, res) => {
   console.log("🔁 login route hit");
