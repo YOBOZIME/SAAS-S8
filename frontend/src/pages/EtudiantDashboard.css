@@ -1,93 +1,125 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f4f4;
+}
+
 .etudiant-dashboard {
-    display: flex;
-    height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f8f8f8;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.navbar {
+  background-color: #1a1a2e;
+  color: white;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.navbar button {
+  background-color: white;
+  color: #1a1a2e;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dashboard-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.offer-list {
+  width: 40%;
+  background-color: #fefefe;
+  padding: 24px;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+}
+
+.offer-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.offer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.offer-card.active {
+  border-left: 4px solid #0a66c2;
+  background-color: #e8f0fe;
+}
+
+.offer-card h3 {
+  margin: 0 0 6px;
+  color: #0a66c2;
+  font-size: 18px;
+}
+
+.offer-card p {
+  margin: 3px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.offer-details {
+  width: 60%;
+  padding: 40px;
+  overflow-y: auto;
+  background-color: #fafafa;
+}
+
+.offer-details h2 {
+  margin-top: 0;
+  color: #1a1a2e;
+}
+
+.offer-details h4 {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.offer-details p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.offer-details hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+@media screen and (max-width: 768px) {
+  .dashboard-content {
+    flex-direction: column;
   }
-  
-  .offre-liste {
-    width: 40%;
-    overflow-y: auto;
-    background-color: #ffffff;
+
+  .offer-list,
+  .offer-details {
+    width: 100%;
+  }
+
+  .offer-details {
     padding: 20px;
-    border-right: 1px solid #ccc;
   }
-  
-  .offre-item {
-    background-color: #f4ecdb;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.2s ease;
-  }
-  
-  .offre-item:hover {
-    border-color: #1c274c;
-    background-color: #f1e8ce;
-  }
-  
-  .offre-item h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #1c274c;
-  }
-  
-  .offre-item p {
-    margin: 4px 0;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .details-panel {
-    width: 60%;
-    padding: 24px;
-    background-color: #ffffff;
-    overflow-y: auto;
-  }
-  
-  .details-panel h2 {
-    color: #1c274c;
-    margin-bottom: 10px;
-  }
-  
-  .details-panel .entreprise {
-    font-weight: bold;
-    color: #444;
-    margin-bottom: 8px;
-  }
-  
-  .details-panel p {
-    font-size: 15px;
-    color: #333;
-    line-height: 1.6;
-    margin-bottom: 12px;
-  }
-  
-  .details-panel .missions,
-  .details-panel .profil {
-    margin-top: 20px;
-  }
-  
-  .details-panel ul {
-    list-style-type: disc;
-    padding-left: 20px;
-  }
-  
-  .details-panel button {
-    background-color: #1c274c;
-    color: #f4ecdb;
-    border: none;
-    padding: 10px 20px;
-    margin-right: 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-  }
-  
-  .details-panel button:hover {
-    background-color: #16203e;
-  }
-  
+}
