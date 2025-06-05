@@ -9,6 +9,8 @@ router.post('/', verifyToken,validateStageData, checkRole(['entreprise']), contr
 router.put('/:id', verifyToken, checkRole(['entreprise']), controller.updateStage);
 router.delete('/:id', verifyToken, checkRole(['entreprise']), controller.removeStage);
 router.get('/', controller.getAllStages);
+router.get('/mine', verifyToken, checkRole(['entreprise']), controller.getMyStages);
+
 
 
 module.exports = router;

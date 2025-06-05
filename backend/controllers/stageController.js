@@ -1,8 +1,15 @@
 const Stage = require('../models/Stage');
+const Entreprise = require('../models/Entreprise'); // ✅ AJOUT ICI
 
 exports.createStage = async (req, res) => {
   try {
-    const { titre, description, domaine, lieu, dateDebut, dateFin, entrepriseId } = req.body;
+    const { titre, description, domaine, lieu, dateDebut, dateFin } = req.body;
+    const userId = req.user.id;
+
+    const entreprise = await Entreprise.findOne({ where: { userId } });
+    if (!entreprise) return res.status(404).json({ message: "Entreprise non trouvée" });
+
+    const entrepriseId = entreprise.id;
 
     const stage = await Stage.create({
       titre,
@@ -19,6 +26,7 @@ exports.createStage = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 exports.updateStage = async (req, res) => {
   try {
@@ -50,6 +58,19 @@ exports.removeStage = async (req, res) => {
 
     await stage.destroy();
     res.json({ message: 'Stage supprimé' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getMyStages = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const entreprise = await Entreprise.findOne({ where: { userId } });
+    if (!entreprise) return res.status(404).json({ message: "Entreprise non trouvée" });
+
+    const stages = await Stage.findAll({ where: { entrepriseId: entreprise.id } });
+    res.json(stages);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

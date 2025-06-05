@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './CreateStage.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+console.log("✅ createStage appelé");
 
 const CreateStage = () => {
   const [stage, setStage] = useState({
@@ -12,15 +13,8 @@ const CreateStage = () => {
     dateDebut: '',
     dateFin: ''
   });
-  const [entrepriseId, setEntrepriseId] = useState(null);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user && user.id) {
-      setEntrepriseId(user.id);
-    }
-  }, []);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setStage({ ...stage, [e.target.name]: e.target.value });
@@ -30,10 +24,7 @@ const CreateStage = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/stages', {
-        ...stage,
-        entrepriseId
-      }, {
+      await axios.post('http://localhost:5000/api/stages', stage, {
         headers: {
           Authorization: `Bearer ${token}`
         }

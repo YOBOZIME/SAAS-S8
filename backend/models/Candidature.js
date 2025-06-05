@@ -18,6 +18,9 @@ const Candidature = sequelize.define('Candidature', {
   }
 });
 
+Candidature.belongsTo(Etudiant, { as: 'etudiant', foreignKey: 'etudiantId' });
+Candidature.belongsTo(Stage, { foreignKey: 'stageId' });
+
 // Relations
 Candidature.belongsTo(Etudiant, { foreignKey: 'etudiantId', onDelete: 'CASCADE' });
 Etudiant.hasMany(Candidature, { foreignKey: 'etudiantId' });

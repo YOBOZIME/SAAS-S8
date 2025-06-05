@@ -8,6 +8,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Register from './pages/Register';
 import CreateStage from './pages/CreateStage';
 import MesStages from './pages/MesStages';
+import EntrepriseProfile from './pages/EntrepriseProfile';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/creer-stage" element={<CreateStage />} />
         <Route path="/mes-stages" element={<MesStages />} />
+        <Route path="/entreprise/profil" element={<EntrepriseProfile />} />
 
         <Route path="/etudiant" element={
           <PrivateRoute role="etudiant">
