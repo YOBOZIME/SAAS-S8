@@ -30,6 +30,8 @@ exports.register = async (req, res) => {
 
 
 exports.login = async (req, res) => {
+  console.log("📩 Données reçues :", req.body);
+
   console.log("🔁 login route hit");
   try {
     const { email, motdepasse } = req.body;
@@ -40,7 +42,11 @@ exports.login = async (req, res) => {
     const isMatch = await bcrypt.compare(motdepasse, user.motdepasse);
     if (!isMatch) return res.status(401).json({ message: 'Mot de passe incorrect' });
 
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign(
+      { id: user.id, role: user.role }, // ← ⚠️ ici, il faut absolument inclure le `role`
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
 
     res.json({ message: 'Connexion réussie', token, user });
   } catch (err) {

@@ -11,6 +11,7 @@ const verifyToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Token décodé :", decoded); 
     req.user = decoded; // contient id et role
     next();
   } catch (err) {

@@ -15,6 +15,10 @@ const Candidature = sequelize.define('Candidature', {
   dateCandidature: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
+  },
+  cv: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 });
 

@@ -1,4 +1,4 @@
-const { Etudiant, Candidature, Stage, Entreprise } = require('../models');
+const { Etudiant, Candidature, Stage, Entreprise, User } = require('../models');
 
 exports.getMesCandidatures = async (req, res) => {
   try {
@@ -69,5 +69,37 @@ exports.postulerStage = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Erreur lors de la soumission de la candidature." });
+  }
+};
+
+exports.getOne = async (req, res) => {
+  try {
+    const etudiant = await Etudiant.findByPk(req.params.id, {
+      include: [{ model: User }]
+    });
+    if (!etudiant) return res.status(404).json({ message: "Étudiant non trouvé" });
+    res.json(etudiant);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+};
+
+exports.getMyProfile = async (req, res) => {
+  console.log("✅ route /me appelée"); // ← pour vérifier l'appel
+
+  try {
+    const etudiant = await Etudiant.findOne({
+      where: { userId: req.user.id },
+      include: [{ model: User }]
+    });
+
+    if (!etudiant) {
+      return res.status(404).json({ message: "Étudiant non trouvé" });
+    }
+
+    res.json(etudiant);
+  } catch (error) {
+    console.error("❌ Erreur dans getMyProfile:", error);  // ← log clair
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };

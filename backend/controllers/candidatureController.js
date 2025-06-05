@@ -1,4 +1,5 @@
 const Candidature = require('../models/Candidature');
+const Etudiant = require('../models/Etudiant');
 
 exports.create = async (req, res) => {
   try {
@@ -53,6 +54,31 @@ exports.update = async (req, res) => {
   }
 };
 
+exports.updateStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!['acceptée', 'refusée'].includes(status)) {
+    return res.status(400).json({ message: "Statut invalide." });
+  }
+
+  try {
+    const candidature = await Candidature.findByPk(id);
+    if (!candidature) {
+      return res.status(404).json({ message: "Candidature introuvable." });
+    }
+
+    candidature.status = status;
+    await candidature.save();
+
+    res.status(200).json({ message: "Statut mis à jour.", candidature });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur." });
+  }
+};
+
+
 exports.remove = async (req, res) => {
   try {
     const { id } = req.params;
@@ -102,5 +128,34 @@ exports.gererCandidature = async (req, res) => {
     res.status(200).json({ message: 'Candidature mise à jour', candidature });
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors de la mise à jour de la candidature' });
+  }
+};
+
+exports.createCandidature = async (req, res) => {
+  try {
+    console.log("✅ Reçu dans createCandidature");
+    console.log("Body :", req.body);
+    console.log("Fichier :", req.file);
+    console.log("User :", req.user);
+
+    const { stageId, message } = req.body;
+    const cv = req.file ? req.file.filename : null;
+    const userId = req.user.id;
+
+    const etudiant = await Etudiant.findOne({ where: { userId } });
+    if (!etudiant) return res.status(404).json({ message: "Étudiant introuvable" });
+
+    const candidature = await Candidature.create({
+      message,
+      cv,
+      stageId,
+      etudiantId: etudiant.id,
+      statut: "en_attente"
+    });
+
+    res.status(201).json(candidature);
+  } catch (error) {
+    console.error("🔥 Erreur createCandidature:", error);
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };

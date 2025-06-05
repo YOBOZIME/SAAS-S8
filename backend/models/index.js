@@ -11,7 +11,7 @@ const Tuteur = require('./Tuteur');
 
 const sync_databases = async () => {
   try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
     console.log('Base de données synchronisée');
   } catch (error) {
     console.error('Erreur de synchronisation', error);
