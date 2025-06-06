@@ -5,6 +5,10 @@ const Stage = require('./Stage');
 const Entreprise = require('./Entreprise');
 
 const Candidature = sequelize.define('Candidature', {
+  message: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
   statut: {
     type: DataTypes.ENUM('en_attente', 'acceptée', 'refusée'),
     defaultValue: 'en_attente'
@@ -21,6 +25,7 @@ const Candidature = sequelize.define('Candidature', {
     allowNull: true
   }
 });
+
 
 Candidature.belongsTo(Etudiant, { as: 'etudiant', foreignKey: 'etudiantId' });
 Candidature.belongsTo(Stage, { foreignKey: 'stageId' });

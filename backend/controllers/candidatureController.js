@@ -58,9 +58,9 @@ exports.update = async (req, res) => {
 
 exports.updateStatus = async (req, res) => {
   const { id } = req.params;
-  const { status } = req.body;
+  const { statut } = req.body;
 
-  if (!['acceptée', 'refusée'].includes(status)) {
+  if (!['acceptée', 'refusée'].includes(statut)) {
     return res.status(400).json({ message: "Statut invalide." });
   }
 
@@ -70,7 +70,7 @@ exports.updateStatus = async (req, res) => {
       return res.status(404).json({ message: "Candidature introuvable." });
     }
 
-    candidature.status = status;
+    candidature.statut = statut; // ✅ correction ici
     await candidature.save();
 
     res.status(200).json({ message: "Statut mis à jour.", candidature });
@@ -79,6 +79,7 @@ exports.updateStatus = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur." });
   }
 };
+
 
 
 exports.remove = async (req, res) => {
@@ -166,8 +167,15 @@ exports.getByStage = async (req, res) => {
   try {
     const { id } = req.params;
     const candidatures = await Candidature.findAll({
-      where: { stageId },
-      include: [{ model: Etudiant, attributes: ['prenom', 'nom', 'filiere', 'niveau'] }]
+      where: { stageId : id },
+      attributes: ['id', 'message', 'statut', 'cv'], // <<< ajoute `message`
+      include: [
+        {
+          model: Etudiant,
+          attributes: ['filiere', 'niveau'],
+          include: [{ model: User, attributes: ['prenom', 'nom', 'email'] }]
+        }
+      ]
     });
     res.json(candidatures);
   } catch (err) {
@@ -180,10 +188,11 @@ exports.getByStageId = async (req, res) => {
   try {
     const candidatures = await Candidature.findAll({
       where: { stageId },
+      attributes: ['id', 'message', 'statut', 'cv'], // ✅ ajoute cette ligne
       include: [
         {
           model: Etudiant,
-          attributes: ['filiere', 'niveau', 'cv', 'lettreMotivation'],
+          attributes: ['filiere', 'niveau'],
           include: [
             {
               model: User,
@@ -197,5 +206,23 @@ exports.getByStageId = async (req, res) => {
   } catch (err) {
     console.error("Erreur getByStageId:", err);
     res.status(500).json({ message: 'Erreur serveur', error: err.message });
+  }
+};
+
+
+exports.getMine = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const etudiant = await Etudiant.findOne({ where: { userId } });
+    if (!etudiant) return res.status(404).json({ message: "Étudiant introuvable" });
+
+    const candidatures = await Candidature.findAll({
+      where: { etudiantId: etudiant.id },
+      include: [{ model: Stage }]
+    });
+
+    res.json(candidatures);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };

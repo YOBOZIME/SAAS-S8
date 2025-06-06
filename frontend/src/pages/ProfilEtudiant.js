@@ -8,16 +8,15 @@ function ProfilEtudiant() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user"));
-
+  
     const fetchData = async () => {
       try {
         const res1 = await axios.get(`http://localhost:5000/api/etudiants/me`, {
-            headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` }
         });
         setEtudiant(res1.data);
-
-        const res2 = await axios.get(`http://localhost:5000/api/etudiants/etudiant`, {
+  
+        const res2 = await axios.get(`http://localhost:5000/api/candidatures/mine`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setCandidatures(res2.data);
@@ -27,7 +26,7 @@ function ProfilEtudiant() {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
 
