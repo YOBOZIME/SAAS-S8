@@ -1,5 +1,6 @@
 const Stage = require('../models/Stage');
 const Entreprise = require('../models/Entreprise'); // ✅ AJOUT ICI
+const Publication = require('../models/Publication'); // ✅ à importer
 
 exports.createStage = async (req, res) => {
   try {
@@ -9,8 +10,6 @@ exports.createStage = async (req, res) => {
     const entreprise = await Entreprise.findOne({ where: { userId } });
     if (!entreprise) return res.status(404).json({ message: "Entreprise non trouvée" });
 
-    const entrepriseId = entreprise.id;
-
     const stage = await Stage.create({
       titre,
       description,
@@ -18,14 +17,24 @@ exports.createStage = async (req, res) => {
       lieu,
       dateDebut,
       dateFin,
-      entrepriseId
+      entrepriseId: entreprise.id,
+      status: 'en attente'
     });
 
-    res.status(201).json({ message: 'Stage créé', stage });
+    // ✅ Création automatique de la publication
+    await Publication.create({
+      auteur: entreprise.nomSociete,
+      contenu: `Une nouvelle offre de stage "${titre}" a été publiée par ${entreprise.nomSociete}.`,
+      stageId: stage.id
+    });
+
+    res.status(201).json({ message: 'Stage et publication créés', stage });
   } catch (error) {
+    console.error("Erreur createStage :", error);
     res.status(500).json({ error: error.message });
   }
 };
+
 
 
 exports.updateStage = async (req, res) => {
@@ -46,9 +55,11 @@ exports.getAllStages = async (req, res) => {
     const stages = await Stage.findAll();
     res.json(stages);
   } catch (err) {
+    console.error("Erreur dans getAllStages:", err); // ✅ Ajoute ceci pour voir l'erreur réelle
     res.status(500).json({ message: 'Erreur serveur', error: err.message });
   }
 };
+
 
 exports.removeStage = async (req, res) => {
   try {

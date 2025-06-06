@@ -118,16 +118,15 @@ const EntrepriseProfile = () => {
   return (
     <div className="entreprise-profile">
       <div className="navbar">
-        <h1
-          style={{ cursor: 'pointer' }}
-          onClick={() => window.location.href = '/entreprise'}
-        >
-          StageConnect
-        </h1>
-        <div className="nav-actions">
-          <button onClick={handleLogout}>Déconnexion</button>
-        </div>
-      </div>
+  <div className="navbar-logo" onClick={() => window.location.href = '/entreprise'}>
+    Intern'<span style={{ color: '#2f486d' }}>Net</span>
+  </div>
+
+  <div className="navbar-actions">
+    <button onClick={handleLogout}>Déconnexion</button>
+  </div>
+</div>
+
 
 
       <div className="profile-container">
@@ -156,9 +155,6 @@ const EntrepriseProfile = () => {
           <p><span>Secteur :</span> {profil.secteur}</p>
           <p><span>Adresse :</span> {profil.adresse}</p>
           <p><span>Email RH :</span> {profil.hr_email}</p>
-          <p><span>Téléphone :</span> {profil.telephone || 'Non renseigné'}</p>
-          <p><span>Site Web :</span> {profil.siteWeb || 'Non renseigné'}</p>
-          <p><span>Description :</span> {profil.description || 'Non renseignée'}</p>
         </div>
       </div>
 

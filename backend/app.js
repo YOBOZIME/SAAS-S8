@@ -35,6 +35,8 @@ const adminRoutes = require('./routes/adminRoute');
 app.use('/api/admin', adminRoutes);
 const errorHandler = require('./middlewares/errorHandler');
 app.use(errorHandler);
+const publicationRoutes = require('./routes/publicationRoutes');
+app.use('/api/publications', publicationRoutes);
 
 sequelize.authenticate()
   .then(() => console.log('Connexion à la base de données réussie.'))

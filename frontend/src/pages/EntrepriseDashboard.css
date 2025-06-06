@@ -9,33 +9,63 @@
   
   /* Navbar */
   .navbar {
-    background-color: #1C274C;
-    color: white;
+    background-color: #f3eae0;
     padding: 16px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid #ddd;
   }
   
   .navbar-logo {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
-  }
-  
-  .navbar-actions button {
-    margin-left: 16px;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 6px;
-    background-color: #F4ECDB;
     color: #1C274C;
     cursor: pointer;
-    transition: background-color 0.3s;
+    flex-shrink: 0; /* ✅ empêche le logo de s'étaler */
+    margin-right: auto; /* ✅ pousse le reste vers la droite */
   }
   
-  .navbar-actions button:hover {
-    background-color: #d9cfb7;
+  .navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
+  
+  
+  .navbar-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #1C274C;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .navbar-avatar:hover {
+    transform: scale(1.05);
+  }
+  
+  .nav-button {
+    all: unset; /* supprime tous les styles par défaut */
+    display: inline-block;
+    background-color: #1C274C;
+    color: white;
+    border-radius: 6px;
+    padding: 8px 14px;
+    margin-left: 16px;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-button:hover {
+    background-color: #16203E;
+  }
+  
   
   /* Corps principal */
   .main-content {

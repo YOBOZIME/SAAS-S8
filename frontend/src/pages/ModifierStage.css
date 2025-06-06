@@ -1,0 +1,73 @@
+:root {
+    --primary-blue: #2f486d;
+    --dark-blue: #223148;
+    --light-beige: #f3eae0;
+    --soft-beige: #d2c7b8;
+    --white: #ffffff;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --radius: 12px;
+  }
+  
+  .modifier-stage-container {
+    padding: 40px;
+    background-color: var(--light-beige);
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .modifier-stage-container h2 {
+    color: var(--dark-blue);
+    font-size: 26px;
+    margin-bottom: 30px;
+  }
+  
+  .stage-form {
+    max-width: 600px;
+    background-color: var(--white);
+    padding: 30px 40px;
+    border-radius: var(--radius);
+    box-shadow: 0 6px 14px var(--shadow-light);
+  }
+  
+  .stage-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-top: 16px;
+  }
+  
+  .stage-form input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+  
+  .stage-form input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 4px var(--primary-blue);
+  }
+  
+  .stage-form button {
+    margin-top: 24px;
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .stage-form button:hover {
+    background-color: var(--dark-blue);
+  }
+  

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './ModifierStage.css';
+
 
 const ModifierStage = () => {
   const location = useLocation();
@@ -31,9 +33,9 @@ const ModifierStage = () => {
   };
 
   return (
-    <div style={{ padding: '40px', fontFamily: 'Segoe UI', backgroundColor: '#f3cae0', minHeight: '100vh' }}>
-      <h2 style={{ color: '#223148' }}>📝 Modifier Stage</h2>
-      <form onSubmit={handleSubmit} style={{ maxWidth: '600px', background: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+    <div className="modifier-stage-container">
+      <h2>📝 Modifier Stage</h2>
+      <form onSubmit={handleSubmit} className="stage-form">
         <label>Titre :</label>
         <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} required />
 

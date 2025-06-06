@@ -26,6 +26,27 @@
   gap: 24px;
 }
 
+.navbar-top {
+  background-color: var(--light-bg); /* même fond */
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  box-shadow: none;
+  border-bottom: 1px solid #e2d3c4; /* fine bordure pour démarquer */
+}
+
+.navbar-brand {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--primary-blue);
+  cursor: pointer;
+}
+
+.navbar-brand:hover {
+  color: var(--dark-blue);
+}
+
+
 .stage-card {
   background-color: var(--white);
   padding: 24px;
@@ -109,39 +130,4 @@
   font-size: 16px;
   text-align: center;
 }
-:root {
-  --primary-blue: #2f486d;
-  --light-bg: #f3cae0;
-  --dark-blue: #223148;
-  --beige: #d2c7b8;
-  --white: #ffffff;
-}
 
-/* Appliquer le fond à toute la page */
-body, .mes-stages-container {
-  background-color: var(--light-bg);
-}
-
-/* Barre du haut harmonisée */
-.navbar-top {
-  background-color: var(--light-bg); /* même fond */
-  padding: 20px 40px;
-  display: flex;
-  align-items: center;
-  box-shadow: none;
-  border-bottom: 1px solid #e2d3c4; /* fine bordure pour démarquer */
-}
-
-/* Lien StageConnect */
-.navbar-brand {
-  font-size: 26px;
-  font-weight: bold;
-  color: var(--primary-blue);
-  cursor: pointer;
-  transition: color 0.3s ease;
-  text-decoration: none;
-}
-
-.navbar-brand:hover {
-  color: var(--dark-blue);
-}
