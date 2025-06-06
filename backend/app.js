@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads/cvs')));
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
@@ -40,7 +41,8 @@ sequelize.authenticate()
   .catch(err => console.error('Erreur de connexion à la base :', err));
 
 //sync
-sync_databases();
+// sync_databases();
+sync_databases({ alter: true });
 
 // Port
 const PORT = process.env.PORT || 5000;

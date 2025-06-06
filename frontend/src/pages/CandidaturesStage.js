@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import './CandidaturesStage.css'; // Assure-toi que ce fichier existe
 
 const CandidaturesStage = () => {
   const { id } = useParams();
@@ -29,31 +30,35 @@ const CandidaturesStage = () => {
         statut: status
       }, {
         headers: { Authorization: `Bearer ${token}` }
-      });      
+      });
       fetchCandidatures();
     } catch (err) {
       console.error("Erreur mise à jour du statut :", err);
     }
   };
-  
 
   return (
-    <div style={{ padding: '40px', backgroundColor: '#f3eae0', minHeight: '100vh' }}>
+    <div className="candidature-page">
       <h2>📥 Candidatures pour ce stage</h2>
       {candidatures.length === 0 ? (
-        <p>Aucune candidature reçue.</p>
+        <p style={{ paddingLeft: '10px' }}>Aucune candidature reçue.</p>
       ) : (
-        candidatures.map((c) => (
-          <div key={c.id} style={{ background: '#fff', margin: '20px 0', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
-            <p><strong>Lettre de motivation :</strong> {c.message}</p>
-            <p><strong>CV :</strong> {c.cv ? <a href={`http://localhost:5000/uploads/${c.cv}`} target="_blank" rel="noreferrer">Voir le CV</a>
- : "Non fourni"}</p>
-            <p><strong>Statut :</strong> {c.statut}</p>
+        <div className="candidature-grid">
+          {candidatures.map((c) => (
+            <div key={c.id} className="candidature-card">
+              <p><strong>Lettre de motivation :</strong><br />{c.message || <em>(Non fournie)</em>}</p>
+              <p><strong>CV :</strong> {c.cv ? (
+                <a href={`http://localhost:5000/uploads/${c.cv}`} target="_blank" rel="noreferrer">Voir le CV</a>
+              ) : "Non fourni"}</p>
+              <p><strong>Statut :</strong> <span className={`candidature-status ${c.statut}`}>{c.statut}</span></p>
 
-            <button onClick={() => updateStatus(c.id, 'acceptée')}>✅ Accepter</button>
-            <button onClick={() => updateStatus(c.id, 'refusée')}>❌ Refuser</button>
-          </div>
-        ))
+              <div className="candidature-actions">
+                <button className="accept" onClick={() => updateStatus(c.id, 'acceptée')}>✅ Accepter</button>
+                <button className="refuse" onClick={() => updateStatus(c.id, 'refusée')}>❌ Refuser</button>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

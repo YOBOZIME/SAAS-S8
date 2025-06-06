@@ -137,11 +137,15 @@ exports.gererCandidature = async (req, res) => {
 exports.createCandidature = async (req, res) => {
   try {
     console.log("✅ Reçu dans createCandidature");
+    console.log("📩 message reçu dans req.body.message :", req.body.message);
+
     console.log("Body :", req.body);
     console.log("Fichier :", req.file);
     console.log("User :", req.user);
 
     const { stageId, message } = req.body;
+    console.log("Message reçu :", message);
+
     const cv = req.file ? req.file.filename : null;
     const userId = req.user.id;
 
