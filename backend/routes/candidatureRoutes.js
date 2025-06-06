@@ -15,6 +15,8 @@ router.post(
 
 router.get('/', verifyToken, checkRole(['admin', 'entreprise']), candidatureController.getAll); 
 router.get('/:id', verifyToken, checkRole(['admin', 'entreprise', 'etudiant']), candidatureController.getOne); 
+router.get('/stage/:stageId', verifyToken, checkRole(['entreprise', 'admin']), candidatureController.getByStageId);
+
 router.put('/:id', verifyToken, checkRole(['entreprise', 'admin']), candidatureController.update);
 router.patch('/:id/status', verifyToken, checkRole(['entreprise']), candidatureController.updateStatus);
 router.delete('/:id', verifyToken, checkRole(['admin']), candidatureController.remove); 

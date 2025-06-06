@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const sequelize = require('./config/database');
-// const { sync_databases } = require('./models/index');
+const { sync_databases } = require('./models/index');
 
 dotenv.config();
 
@@ -19,8 +19,6 @@ const privateRoutes = require('./routes/privateRoutes');
 app.use('/api/private', privateRoutes);
 const candidatureRoutes = require('./routes/candidatureRoutes');
 app.use('/api/candidatures', candidatureRoutes);
-console.log("✅ Route /api/candidatures active");
-
 const stageRoutes = require('./routes/stageRoutes');
 app.use('/api/stages', stageRoutes);
 const entrepriseRoutes = require('./routes/entrepriseRoutes');
@@ -34,7 +32,6 @@ app.use('/api/admin', adminRoutes);
 const errorHandler = require('./middlewares/errorHandler');
 app.use(errorHandler);
 
-
 sequelize.authenticate()
   .then(() => console.log('Connexion à la base de données réussie.'))
   .catch(err => console.error('Erreur de connexion à la base :', err));
@@ -45,6 +42,3 @@ sync_databases();
 // Port
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
-setInterval(() => {
-  console.log('✅ Serveur actif...');
-}, 5000);

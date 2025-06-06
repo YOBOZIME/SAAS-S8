@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Slider from 'react-slick';
 import './EntrepriseProfile.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const EntrepriseProfile = () => {
   const [profil, setProfil] = useState(null);
   const [stages, setStages] = useState([]);
   const [candidatures, setCandidatures] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
 
   const token = localStorage.getItem('token');
 
   useEffect(() => {
+    const saved = localStorage.getItem("entreprisePhoto");
+    if (saved) setPhotoPreview(saved);
+
     const fetchData = async () => {
       try {
         const [profilRes, stageRes, candRes] = await Promise.all([
@@ -37,16 +42,19 @@ const EntrepriseProfile = () => {
     fetchData();
   }, [token]);
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file);
-    setPhotoPreview(URL.createObjectURL(file));
-  };
+    if (!file) return;
 
-  const handleUpload = async () => {
-    if (!selectedFile) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      localStorage.setItem("entreprisePhoto", reader.result);
+      setPhotoPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+
     const formData = new FormData();
-    formData.append('photo', selectedFile);
+    formData.append('photo', file);
 
     try {
       await axios.patch('http://localhost:5000/api/entreprises/photo', formData, {
@@ -55,10 +63,25 @@ const EntrepriseProfile = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setProfil(prev => ({ ...prev, photo: selectedFile.name }));
-      alert("Photo mise à jour !");
+      setProfil(prev => ({ ...prev, photo: file.name }));
+      localStorage.removeItem("entreprisePhoto");
     } catch (err) {
       console.error("Erreur upload photo :", err);
+    }
+  };
+
+  const handleCandidature = async (id, newStatus) => {
+    try {
+      await axios.patch(`http://localhost:5000/api/candidatures/${id}/status`, { status: newStatus }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setCandidatures(prev =>
+        prev.map(c => c.id === id ? { ...c, status: newStatus } : c)
+      );
+    } catch (err) {
+      console.error("Erreur mise à jour de la candidature :", err);
+      alert("Échec de la mise à jour.");
     }
   };
 
@@ -70,10 +93,37 @@ const EntrepriseProfile = () => {
 
   if (!profil) return <p>Chargement du profil...</p>;
 
+  const sliderSettings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+        }
+      }
+    ]
+  };
+
   return (
     <div className="entreprise-profile">
       <div className="navbar">
-        <h1>StageConnect</h1>
+        <h1
+          style={{ cursor: 'pointer' }}
+          onClick={() => window.location.href = '/entreprise'}
+        >
+          StageConnect
+        </h1>
         <div className="nav-actions">
           <button onClick={handleLogout}>Déconnexion</button>
         </div>
@@ -94,8 +144,10 @@ const EntrepriseProfile = () => {
             alt="Profil"
           />
           <div className="file-upload">
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleUpload}>Mettre à jour</button>
+            <label className="upload-button">
+              Choisir une image
+              <input type="file" onChange={handleFileChange} hidden />
+            </label>
           </div>
         </div>
 
@@ -121,22 +173,6 @@ const EntrepriseProfile = () => {
               <p><strong>Domaine:</strong> {stage.domaine}</p>
               <p><strong>Lieu:</strong> {stage.lieu}</p>
               <p><strong>Période:</strong> {stage.dateDebut?.slice(0, 10)} - {stage.dateFin?.slice(0, 10)}</p>
-            </div>
-          ))
-        )}
-      </div>
-
-      <h3 className="section-title">🎓 Candidatures reçues</h3>
-      <div className="section-cards">
-        {candidatures.length === 0 ? (
-          <p style={{ marginLeft: '40px' }}>Aucune candidature pour l’instant.</p>
-        ) : (
-          candidatures.map(c => (
-            <div className="card" key={c.id}>
-              <h4>{c.etudiant?.prenom} {c.etudiant?.nom}</h4>
-              <p><strong>Filière :</strong> {c.etudiant?.filiere}</p>
-              <p><strong>Niveau :</strong> {c.etudiant?.niveau}</p>
-              <p><strong>Status :</strong> {c.status}</p>
             </div>
           ))
         )}

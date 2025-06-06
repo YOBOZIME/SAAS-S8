@@ -33,6 +33,6 @@ Candidature.belongsTo(Stage, { foreignKey: 'stageId', onDelete: 'CASCADE' });
 Stage.hasMany(Candidature, { foreignKey: 'stageId' });
 
 Candidature.belongsTo(Entreprise, { foreignKey: 'entrepriseId', onDelete: 'CASCADE' });
-Stage.hasMany(Candidature, { foreignKey: 'entrepriseId' });
+// Stage.hasMany(Candidature, { foreignKey: 'entrepriseId' });
 
 module.exports = Candidature;

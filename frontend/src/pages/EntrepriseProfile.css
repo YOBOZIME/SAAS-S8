@@ -3,7 +3,10 @@
   --primary-color: #0a66c2;
   --light-bg: #f3f2ef;
   --text-dark: #1a1a2e;
-  --card-bg: white;
+  --card-bg: #ffffff;
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-strong: rgba(0, 0, 0, 0.1);
+  --radius: 12px;
 }
 
 body, .entreprise-profile {
@@ -13,7 +16,7 @@ body, .entreprise-profile {
   padding: 0;
 }
 
-/* Barre de navigation */
+/* Navbar */
 .navbar {
   background-color: var(--text-dark);
   color: white;
@@ -21,10 +24,12 @@ body, .entreprise-profile {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 6px var(--shadow-light);
 }
 
 .navbar h1 {
-  font-size: 22px;
+  font-size: 24px;
+  font-weight: bold;
   margin: 0;
 }
 
@@ -33,82 +38,26 @@ body, .entreprise-profile {
   color: var(--text-dark);
   border: none;
   padding: 8px 18px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   cursor: pointer;
   font-weight: 600;
+  transition: background-color 0.3s ease;
 }
 
-/* Corrige le positionnement vertical */
+.navbar .nav-actions button:hover {
+  background-color: #e5e5e5;
+}
+
+/* Profil Container */
 .profile-container {
   display: flex;
   flex-wrap: wrap;
-  margin-top: -60px; /* réduit l'effet de remontée */
+  margin-top: 40px;
   padding: 40px;
   gap: 30px;
 }
 
-/* Titre de section */
-.section-title {
-  font-size: 22px;
-  color: #1a1a2e;
-  margin: 40px 0 10px 40px;
-}
-
-/* Conteneurs des cartes */
-.stage-list,
-.candidature-list {
-  padding: 0 40px 40px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.stage-card,
-.candidature-card {
-  background: white;
-  border-radius: 12px;
-  padding: 18px 22px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
-}
-
-.stage-card h4,
-.candidature-card h4 {
-  color: #0a66c2;
-  margin-bottom: 10px;
-}
-
-.stage-card p,
-.candidature-card p {
-  margin: 4px 0;
-  font-size: 15px;
-}
-
-.section-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  padding: 0 40px 40px;
-}
-
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  transition: all 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-}
-
-.card h4 {
-  margin-bottom: 12px;
-  color: var(--primary-color);
-}
-
-
-/* Section à gauche - photo et bouton */
+/* Profil gauche */
 .profile-left {
   flex: 0 0 220px;
   display: flex;
@@ -123,6 +72,7 @@ body, .entreprise-profile {
   object-fit: cover;
   border: 4px solid white;
   background-color: #eee;
+  box-shadow: 0 2px 8px var(--shadow-light);
 }
 
 .file-upload {
@@ -130,26 +80,28 @@ body, .entreprise-profile {
   text-align: center;
 }
 
-.file-upload input {
-  margin-bottom: 6px;
-}
-
-.file-upload button {
+.upload-button {
+  display: inline-block;
   background-color: var(--primary-color);
   color: white;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Section droite - infos profil */
+.upload-button:hover {
+  background-color: #084a9c;
+}
+
+/* Infos profil */
 .profile-info {
   flex: 1;
   background-color: var(--card-bg);
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 30px 40px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px var(--shadow-light);
 }
 
 .profile-info h2 {
@@ -168,11 +120,142 @@ body, .entreprise-profile {
   color: #333;
 }
 
+/* Section title */
+.section-title {
+  font-size: 22px;
+  color: var(--text-dark);
+  margin: 40px 0 10px 40px;
+}
+
+/* Stage Cards */
+.section-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 0 40px 40px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 2px 8px var(--shadow-light);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h4 {
+  margin-bottom: 12px;
+  color: var(--primary-color);
+}
+
+/* Buttons */
+.btn-accept, .btn-reject {
+  padding: 6px 12px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-accept {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-accept:hover {
+  background-color: #218838;
+}
+
+.btn-reject {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-reject:hover {
+  background-color: #c82333;
+}
+
+/* Carrousel Candidatures */
+.slick-slider {
+  padding: 10px;
+}
+
+.slick-slide > div {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.candidature-card-carousel {
+  width: 100%;
+  max-width: 320px;
+  background-color: #ffffff;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 3px 12px var(--shadow-strong);
+  text-align: left;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.candidature-card-carousel:hover {
+  transform: translateY(-4px);
+}
+
+.candidature-card-carousel h4 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.candidature-card-carousel p {
+  font-size: 14px;
+  margin: 6px 0;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 20px;
+  margin-top: 8px;
+  text-transform: capitalize;
+}
+
+.status-en-attente {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.status-acceptée {
+  background-color: #28a745;
+  color: white;
+}
+
+.status-refusée {
+  background-color: #dc3545;
+  color: white;
+}
+
+.candidature-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
 @media screen and (max-width: 768px) {
   .profile-container {
     flex-direction: column;
     padding: 0 20px;
   }
+
   .navbar {
     flex-direction: column;
     align-items: flex-start;

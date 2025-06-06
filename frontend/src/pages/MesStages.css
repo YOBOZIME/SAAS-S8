@@ -1,79 +1,147 @@
+:root {
+  --primary-blue: #2f486d;
+  --dark-blue: #223148;
+  --light-beige: #f3eae0;
+  --soft-beige: #d2c7b8;
+  --white: #ffffff;
+}
+
 .mes-stages-container {
-    padding: 40px;
-    background-color: #f4ecdb;
-    min-height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
-  }
-  
-  .mes-stages-container h2 {
-    color: #1c274c;
-    margin-bottom: 20px;
-  }
-  
-  .stage-card {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    border-left: 5px solid #1c274c;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .stage-card:hover {
-    box-shadow: 0 6px 18px rgba(28, 39, 76, 0.15);
-  }
-  
-  .stage-card h3 {
-    margin: 0 0 10px;
-    color: #1c274c;
-  }
-  
-  .stage-card p {
-    margin: 6px 0;
-    color: #333;
-  }
-  
-  .stage-card p strong {
-    color: #000;
-  }
-  
-  .stage-card .actions {
-    margin-top: 15px;
-    display: flex;
-    gap: 10px;
-  }
-  
-  .stage-card button {
-    padding: 8px 14px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .stage-card button.edit {
-    background-color: #9baab3;
-    color: white;
-  }
-  
-  .stage-card button.edit:hover {
-    background-color: #7e8c94;
-  }
-  
-  .stage-card button.delete {
-    background-color: #d9534f;
-    color: white;
-  }
-  
-  .stage-card button.delete:hover {
-    background-color: #c9302c;
-  }
-  
-  .no-stages {
-    color: #555;
-    font-style: italic;
-    margin-top: 40px;
-  }
-  
+  padding: 40px;
+  background-color: var(--light-beige);
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.mes-stages-container h2 {
+  color: var(--dark-blue);
+  margin-bottom: 30px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.stages-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.stage-card {
+  background-color: var(--white);
+  padding: 24px;
+  border-radius: 12px;
+  border-left: 6px solid var(--primary-blue);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.stage-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(34, 49, 72, 0.15);
+}
+
+.stage-card h3 {
+  color: var(--primary-blue);
+  margin-bottom: 14px;
+  font-size: 20px;
+}
+
+.stage-card p {
+  margin: 6px 0;
+  color: #333;
+  font-size: 15px;
+}
+
+.stage-card p strong {
+  color: var(--dark-blue);
+}
+
+.btn-group {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stage-card button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+/* Boutons */
+.edit-btn {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
+.edit-btn:hover {
+  background-color: #1e3650;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: var(--white);
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.view-btn {
+  background-color: var(--soft-beige);
+  color: var(--dark-blue);
+  border: 1px solid var(--dark-blue);
+}
+
+.view-btn:hover {
+  background-color: #c4b9aa;
+}
+
+.no-stages {
+  color: #555;
+  font-style: italic;
+  margin-top: 40px;
+  font-size: 16px;
+  text-align: center;
+}
+:root {
+  --primary-blue: #2f486d;
+  --light-bg: #f3cae0;
+  --dark-blue: #223148;
+  --beige: #d2c7b8;
+  --white: #ffffff;
+}
+
+/* Appliquer le fond à toute la page */
+body, .mes-stages-container {
+  background-color: var(--light-bg);
+}
+
+/* Barre du haut harmonisée */
+.navbar-top {
+  background-color: var(--light-bg); /* même fond */
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  box-shadow: none;
+  border-bottom: 1px solid #e2d3c4; /* fine bordure pour démarquer */
+}
+
+/* Lien StageConnect */
+.navbar-brand {
+  font-size: 26px;
+  font-weight: bold;
+  color: var(--primary-blue);
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.navbar-brand:hover {
+  color: var(--dark-blue);
+}

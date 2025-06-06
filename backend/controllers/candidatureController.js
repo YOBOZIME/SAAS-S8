@@ -1,5 +1,7 @@
 const Candidature = require('../models/Candidature');
 const Etudiant = require('../models/Etudiant');
+const User = require('../models/User');
+const Stage = require('../models/Stage');
 
 exports.create = async (req, res) => {
   try {
@@ -157,5 +159,43 @@ exports.createCandidature = async (req, res) => {
   } catch (error) {
     console.error("🔥 Erreur createCandidature:", error);
     res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+};
+
+exports.getByStage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const candidatures = await Candidature.findAll({
+      where: { stageId },
+      include: [{ model: Etudiant, attributes: ['prenom', 'nom', 'filiere', 'niveau'] }]
+    });
+    res.json(candidatures);
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', error: err.message });
+  }
+};
+
+exports.getByStageId = async (req, res) => {
+  const { stageId } = req.params;
+  try {
+    const candidatures = await Candidature.findAll({
+      where: { stageId },
+      include: [
+        {
+          model: Etudiant,
+          attributes: ['filiere', 'niveau', 'cv', 'lettreMotivation'],
+          include: [
+            {
+              model: User,
+              attributes: ['prenom', 'nom', 'email']
+            }
+          ]
+        }
+      ]
+    });
+    res.json(candidatures);
+  } catch (err) {
+    console.error("Erreur getByStageId:", err);
+    res.status(500).json({ message: 'Erreur serveur', error: err.message });
   }
 };
