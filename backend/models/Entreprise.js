@@ -27,7 +27,10 @@ const Entreprise = sequelize.define('Entreprise', {
   },
   description:{
     type: DataTypes.TEXT
-  }
+  },
+  photo: {
+    type: DataTypes.STRING
+  }  
 });
 
 // Association : une entreprise est un utilisateur

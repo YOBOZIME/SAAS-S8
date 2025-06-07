@@ -1,5 +1,6 @@
 const { Stage, Candidature, Etudiant } = require('../models');
 const Entreprise = require('../models/Entreprise');
+const path = require('path');
 
 exports.createEntreprise = async (req, res) => {
   try {
@@ -63,5 +64,21 @@ exports.getCandidatures = async (req, res) => {
     res.json(candidatures);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+// controllers/entrepriseController.js
+exports.updatePhoto = async (req, res) => {
+  try {
+    const entreprise = await Entreprise.findOne({ where: { userId: req.user.id } });
+    if (!entreprise) return res.status(404).json({ message: "Entreprise non trouvée" });
+
+    entreprise.photo = req.file.filename; // nom du fichier dans le dossier uploads/
+    await entreprise.save();
+
+    res.json({ message: "Photo mise à jour", photo: entreprise.photo });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur" });
   }
 };

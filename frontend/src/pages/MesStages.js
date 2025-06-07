@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './MesStages.css';
+import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 
 const MesStages = () => {
   const [stages, setStages] = useState([]);
@@ -68,10 +69,17 @@ const MesStages = () => {
               <p><strong>Lieu:</strong> {stage.lieu}</p>
               <p><strong>Période:</strong> {stage.dateDebut?.slice(0, 10)} au {stage.dateFin?.slice(0, 10)}</p>
               <div className="btn-group">
-                <button className="edit-btn" onClick={() => goToUpdate(stage)}>✏️ Modifier</button>
-                <button className="delete-btn" onClick={() => deleteStage(stage.id)}>🗑️ Supprimer</button>
-                <button className="view-btn" onClick={() => goToCandidatures(stage.id)}>👀 Voir Candidatures</button>
+                <button className="edit-btn" onClick={() => goToUpdate(stage)}>
+                  <FaEdit /> Modifier
+                </button>
+                <button className="delete-btn" onClick={() => deleteStage(stage.id)}>
+                  <FaTrash /> Supprimer
+                </button>
+                <button className="view-btn" onClick={() => goToCandidatures(stage.id)}>
+                  <FaEye /> Voir Candidatures
+                </button>
               </div>
+
             </div>
           ))
         )}

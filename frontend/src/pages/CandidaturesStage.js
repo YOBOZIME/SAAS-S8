@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './CandidaturesStage.css'; // Assure-toi que ce fichier existe
+import { useNavigate } from 'react-router-dom';
 
 const CandidaturesStage = () => {
   const { id } = useParams();
   const [candidatures, setCandidatures] = useState([]);
+  const navigate = useNavigate();
 
   const fetchCandidatures = async () => {
     try {
@@ -39,6 +41,12 @@ const CandidaturesStage = () => {
 
   return (
     <div className="candidature-page">
+      <div className="navbar-top">
+  <div className="navbar-brand" onClick={() => navigate('/entreprise')}>
+    Intern'<span style={{ color: '#2f486d' }}>Net</span>
+  </div>
+</div>
+
       <h2>📥 Candidatures pour ce stage</h2>
       {candidatures.length === 0 ? (
         <p style={{ paddingLeft: '10px' }}>Aucune candidature reçue.</p>

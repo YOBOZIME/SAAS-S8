@@ -1,57 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Slider from 'react-slick';
 import './EntrepriseProfile.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 const EntrepriseProfile = () => {
   const [profil, setProfil] = useState(null);
   const [stages, setStages] = useState([]);
-  const [candidatures, setCandidatures] = useState([]);
-  const [photoPreview, setPhotoPreview] = useState(null);
-
   const token = localStorage.getItem('token');
 
+  const fetchProfile = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/entreprises/profil', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setProfil(res.data);
+    } catch (err) {
+      console.error('Erreur chargement profil :', err);
+    }
+  };
+
   useEffect(() => {
-    const saved = localStorage.getItem("entreprisePhoto");
-    if (saved) setPhotoPreview(saved);
+    fetchProfile();
+    fetchStages();
+  }, []);
 
-    const fetchData = async () => {
-      try {
-        const [profilRes, stageRes, candRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/entreprises/profil', {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get('http://localhost:5000/api/stages/mine', {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get('http://localhost:5000/api/entreprises/candidatures', {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
-
-        setProfil(profilRes.data);
-        setStages(stageRes.data);
-        setCandidatures(candRes.data);
-      } catch (err) {
-        console.error("Erreur lors du chargement :", err);
-      }
-    };
-
-    fetchData();
-  }, [token]);
+  const fetchStages = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/stages/mine', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setStages(res.data);
+    } catch (err) {
+      console.error('Erreur chargement stages :', err);
+    }
+  };
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      localStorage.setItem("entreprisePhoto", reader.result);
-      setPhotoPreview(reader.result);
-    };
-    reader.readAsDataURL(file);
 
     const formData = new FormData();
     formData.append('photo', file);
@@ -63,82 +48,36 @@ const EntrepriseProfile = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setProfil(prev => ({ ...prev, photo: file.name }));
-      localStorage.removeItem("entreprisePhoto");
+      await fetchProfile(); // 🔁 recharger le profil après upload
     } catch (err) {
-      console.error("Erreur upload photo :", err);
+      console.error('Erreur upload photo :', err);
     }
   };
 
-  const handleCandidature = async (id, newStatus) => {
-    try {
-      await axios.patch(`http://localhost:5000/api/candidatures/${id}/status`, { status: newStatus }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      setCandidatures(prev =>
-        prev.map(c => c.id === id ? { ...c, status: newStatus } : c)
-      );
-    } catch (err) {
-      console.error("Erreur mise à jour de la candidature :", err);
-      alert("Échec de la mise à jour.");
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login';
-  };
-
-  if (!profil) return <p>Chargement du profil...</p>;
-
-  const sliderSettings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-        }
-      }
-    ]
-  };
+  if (!profil) return <p>Chargement...</p>;
 
   return (
     <div className="entreprise-profile">
       <div className="navbar">
-  <div className="navbar-logo" onClick={() => window.location.href = '/entreprise'}>
-    Intern'<span style={{ color: '#2f486d' }}>Net</span>
-  </div>
-
-  <div className="navbar-actions">
-    <button onClick={handleLogout}>Déconnexion</button>
-  </div>
-</div>
-
-
+        <div className="navbar-logo" onClick={() => window.location.href = '/entreprise'}>
+          Intern'<span style={{ color: '#2f486d' }}>Net</span>
+        </div>
+        <div className="navbar-actions">
+          <button onClick={() => {
+            localStorage.clear();
+            window.location.href = '/login';
+          }}>Déconnexion</button>
+        </div>
+      </div>
 
       <div className="profile-container">
         <div className="profile-left">
           <img
             className="profile-pic"
             src={
-              photoPreview
-                ? photoPreview
-                : profil.photo
-                  ? `http://localhost:5000/uploads/${profil.photo}`
-                  : '/default-avatar.png'
+              profil.photo
+                ? `http://localhost:5000/uploads/${profil.photo}?${Date.now()}`
+                : '/default-avatar.png'
             }
             alt="Profil"
           />
@@ -152,9 +91,9 @@ const EntrepriseProfile = () => {
 
         <div className="profile-info">
           <h2>{profil.nomSociete}</h2>
-          <p><span>Secteur :</span> {profil.secteur}</p>
-          <p><span>Adresse :</span> {profil.adresse}</p>
-          <p><span>Email RH :</span> {profil.hr_email}</p>
+          <p><strong>Secteur :</strong> {profil.secteur}</p>
+          <p><strong>Adresse :</strong> {profil.adresse}</p>
+          <p><strong>Email RH :</strong> {profil.hr_email}</p>
         </div>
       </div>
 
