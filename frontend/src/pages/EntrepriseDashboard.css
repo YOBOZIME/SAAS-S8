@@ -93,6 +93,27 @@
     border-bottom: 1px solid #E5E5E5;
   }
   
+  /* Style spécifique aux posts de stages */
+.post-stage {
+  background-color: #fdfaf5;
+  border: 1px solid #e2dcd1;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  padding: 16px;
+  transition: box-shadow 0.3s ease;
+}
+
+.post-stage:hover {
+  box-shadow: 0 4px 12px rgba(180, 144, 121, 0.2);
+}
+
+.post-stage p.description {
+  font-style: italic;
+  color: #333;
+  margin-top: 8px;
+}
+
+
   .post:last-child {
     border-bottom: none;
   }

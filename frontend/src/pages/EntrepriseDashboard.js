@@ -6,7 +6,8 @@ import './EntrepriseDashboard.css';
 
 const EntrepriseDashboard = () => {
   const [photo, setPhoto] = useState(null);
-  const [posts, setPosts] = useState([]); // 🔵 état pour les publications
+  const [posts, setPosts] = useState([]);
+  const [otherStages, setOtherStages] = useState([]); // ✅ Étape 1
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,8 +44,20 @@ const EntrepriseDashboard = () => {
       }
     };
 
+    const fetchOtherStages = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/stages/others", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setOtherStages(res.data);
+      } catch (err) {
+        console.error("Erreur chargement stages autres entreprises :", err);
+      }
+    };
+
     fetchProfile();
     fetchPosts();
+    fetchOtherStages(); // ✅ Étape 3
   }, []);
 
   const handleLogout = () => {
@@ -80,16 +93,31 @@ const EntrepriseDashboard = () => {
       <div className="main-content">
         <div className="feed">
           <h3>Fil d’actualité</h3>
-          {posts.length === 0 ? (
-            <p>Aucune publication disponible.</p>
+
+          {posts.length === 0 && otherStages.length === 0 ? (
+            <p>Aucune actualité disponible.</p>
           ) : (
-            posts.map((post, index) => (
-              <div className="post" key={index}>
-                <strong>{post.auteur}</strong>
-                <p>{post.contenu}</p>
-                <small>{post.date}</small>
-              </div>
-            ))
+            <>
+              {posts.map((post, index) => (
+                <div className="post" key={index}>
+                  <strong>{post.auteur}</strong>
+                  <p>{post.contenu}</p>
+                  <small>{post.date}</small>
+                </div>
+              ))}
+
+              {otherStages.map((stage, index) => (
+                <div className="post post-stage" key={`stage-${index}`}>
+                  <strong>{stage.Entreprise?.nomSociete}</strong>
+                  <p><strong>{stage.titre}</strong></p>
+                  <p>Domaine : {stage.domaine}</p>
+                  <p>Lieu : {stage.lieu}</p>
+                  <p className="description">{stage.description}</p>
+                  <small>Stage publié</small>
+                </div>
+              ))}
+
+            </>
           )}
         </div>
 

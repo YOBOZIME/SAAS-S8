@@ -13,6 +13,7 @@ import EntrepriseProfile from './pages/EntrepriseProfile';
 import ProfilEtudiant from "./pages/ProfilEtudiant";
 import ModifierStage from './pages/ModifierStage';
 import CandidaturesStage from './pages/CandidaturesStage';
+import OtherStages from './pages/OtherStages';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/profil" element={<ProfilEtudiant />} />
         <Route path="/modifier-stage/:id" element={<ModifierStage />} />
         <Route path="/candidatures-stage/:id" element={<CandidaturesStage />} />
+        <Route path="/autres-stages" element={<OtherStages />} />
 
         <Route path="/etudiant" element={
           <PrivateRoute role="etudiant">

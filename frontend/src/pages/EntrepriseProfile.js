@@ -98,6 +98,7 @@ const EntrepriseProfile = () => {
       </div>
 
       <h3 className="section-title">📌 Offres de Stage</h3>
+      
       <div className="section-cards">
         {stages.length === 0 ? (
           <p style={{ marginLeft: '40px' }}>Aucune offre pour le moment.</p>

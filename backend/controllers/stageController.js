@@ -1,6 +1,7 @@
 const Stage = require('../models/Stage');
 const Entreprise = require('../models/Entreprise'); // ✅ AJOUT ICI
 const Publication = require('../models/Publication'); // ✅ à importer
+const { Op } = require('sequelize');
 
 exports.createStage = async (req, res) => {
   try {
@@ -21,7 +22,6 @@ exports.createStage = async (req, res) => {
       status: 'en attente'
     });
 
-    // ✅ Création automatique de la publication
     await Publication.create({
       auteur: entreprise.nomSociete,
       contenu: `Une nouvelle offre de stage "${titre}" a été publiée par ${entreprise.nomSociete}.`,
@@ -34,6 +34,7 @@ exports.createStage = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 
 
@@ -85,4 +86,17 @@ exports.getMyStages = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+exports.getStagesOfOtherEntreprises = async (currentEntrepriseId) => {
+  const stages = await Stage.findAll({
+    where: { entrepriseId: { [Op.ne]: currentEntrepriseId } },
+    include: {
+      model: Entreprise,
+      attributes: ['nomSociete', 'secteur']
+    }
+  });
+
+  console.log("Stages found for other entreprises:", stages.length);
+  return stages;
 };
