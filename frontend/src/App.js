@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
+import Main from './pages/Main';
 import EtudiantDashboard from './pages/EtudiantDashboard';
 import EntrepriseDashboard from './pages/EntrepriseDashboard';
 import AdminDashboard from './pages/AdminDashboard';
@@ -11,13 +12,14 @@ import MesStages from './pages/MesStages';
 import EntrepriseProfile from './pages/EntrepriseProfile';
 import ProfilEtudiant from "./pages/ProfilEtudiant";
 import ModifierStage from './pages/ModifierStage';
-// import CandidaturesStage from './pages/CandidaturesStage';
+import CandidaturesStage from './pages/CandidaturesStage';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/creer-stage" element={<CreateStage />} />
@@ -25,6 +27,7 @@ function App() {
         <Route path="/entreprise/profil" element={<EntrepriseProfile />} />
         <Route path="/profil" element={<ProfilEtudiant />} />
         <Route path="/modifier-stage/:id" element={<ModifierStage />} />
+        <Route path="/candidatures-stage/:id" element={<CandidaturesStage />} />
 
         <Route path="/etudiant" element={
           <PrivateRoute role="etudiant">
