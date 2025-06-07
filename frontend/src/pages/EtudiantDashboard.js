@@ -1,17 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import './EtudiantDashboard.css';
 import { logout } from '../services/authService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 const EtudiantDashboard = () => {
   const [offers, setOffers] = useState([]);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ message: '', cv: null });
+  const [appliedStages, setAppliedStages] = useState([]);
+  const [photo, setPhoto] = useState(null);
 
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  const fetchPhoto = async () => {
+    const saved = localStorage.getItem("etudiantPhoto");
+    if (saved) {
+      setPhoto(saved);
+    } else {
+      try {
+        const res = await axios.get("http://localhost:5000/api/etudiants/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.data.photo) {
+          const fullUrl = `http://localhost:5000/uploads/${res.data.photo}`;
+          setPhoto(fullUrl);
+          localStorage.setItem("etudiantPhoto", fullUrl);
+        } else {
+          setPhoto('/default-avatar.png');
+        }
+      } catch (err) {
+        console.error("Erreur chargement photo étudiant :", err);
+        setPhoto('/default-avatar.png');
+      }
+    }
+  };
+  
 
   const handleLogout = () => {
     logout();
@@ -19,23 +44,22 @@ const EtudiantDashboard = () => {
   };
 
   const handleApplyClick = () => {
+    if (appliedStages.includes(selectedOffer.id)) {
+      alert("❗ Vous avez déjà envoyé votre candidature pour ce stage.");
+      return;
+    }
     setShowModal(true);
   };
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'cv') {
-      setForm({ ...form, cv: files[0] });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
+    setForm({ ...form, [name]: name === 'cv' ? files[0] : value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedOffer) return;
 
-    const token = localStorage.getItem('token');
     const data = new FormData();
     data.append('message', form.message);
     data.append('cv', form.cv);
@@ -49,29 +73,67 @@ const EtudiantDashboard = () => {
         }
       });
       alert("✅ Candidature envoyée avec succès !");
+      setAppliedStages([...appliedStages, selectedOffer.id]);
       setShowModal(false);
       setForm({ message: '', cv: null });
     } catch (error) {
-      console.error("Erreur candidature", error);
-      alert("❌ Une erreur est survenue !");
+      if (error.response?.status === 400 && error.response?.data?.message.includes("déjà")) {
+        alert("❗ Vous avez déjà postulé à ce stage.");
+      } else {
+        alert("❌ Une erreur est survenue !");
+      }
+    }
+  };
+
+  const fetchCandidatures = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/candidatures/mes", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const stageIds = res.data.map(c => c.Stage?.id || c.stageId);
+      setAppliedStages(stageIds);
+    } catch (err) {
+      console.error("Erreur chargement candidatures", err);
+    }
+  };
+
+  const fetchStages = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/stages");
+      setOffers(res.data);
+    } catch (err) {
+      console.error("Erreur chargement des stages", err);
     }
   };
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/stages")
-      .then(res => setOffers(res.data))
-      .catch(err => console.error("Erreur chargement des stages", err));
+    const loadData = async () => {
+      await fetchPhoto();
+      await fetchCandidatures(); // d'abord les candidatures
+      await fetchStages();       // ensuite les stages
+    };
+  
+    loadData();
   }, []);
 
   return (
     <div className="etudiant-dashboard">
       <nav className="navbar">
-        <h1>🎓 Opportunités de Stage</h1>
-        <Link to="/profil">
-          <button className="btn btn-outline">Profil</button>
-        </Link>
-        <button onClick={handleLogout}>Se déconnecter</button>
-      </nav>
+  <div className="navbar-logo" onClick={() => navigate('/etudiant')}>
+    Intern'<span style={{ color: '#2f486d' }}>Net</span>
+  </div>
+
+  <div className="navbar-actions">
+    <button onClick={handleLogout}>Déconnexion</button>
+    <img
+      src={photo || '/default-avatar.png'}
+      alt="Profil"
+      className="navbar-avatar"
+      onClick={() => navigate('/profil')}
+    />
+  </div>
+</nav>
+
 
       <div className="dashboard-main">
         <aside className="offre-liste">
@@ -102,8 +164,16 @@ const EtudiantDashboard = () => {
               <h3>Description du stage</h3>
               <p>{selectedOffer.description || "Aucune description fournie."}</p>
 
-              <button className="apply-btn" onClick={handleApplyClick}>
-                📩 Postuler
+              <button
+                className="apply-btn"
+                onClick={handleApplyClick}
+                disabled={appliedStages.includes(selectedOffer.id)}
+                style={{
+                  backgroundColor: appliedStages.includes(selectedOffer.id) ? '#ccc' : '',
+                  cursor: appliedStages.includes(selectedOffer.id) ? 'not-allowed' : 'pointer'
+                }}
+              >
+                {appliedStages.includes(selectedOffer.id) ? '✅ Candidature envoyée' : '📩 Postuler'}
               </button>
             </div>
           ) : (

@@ -137,21 +137,23 @@ exports.gererCandidature = async (req, res) => {
 exports.createCandidature = async (req, res) => {
   try {
     console.log("✅ Reçu dans createCandidature");
-    console.log("📩 message reçu dans req.body.message :", req.body.message);
-
-    console.log("Body :", req.body);
-    console.log("Fichier :", req.file);
-    console.log("User :", req.user);
-
     const { stageId, message } = req.body;
-    console.log("Message reçu :", message);
-
     const cv = req.file ? req.file.filename : null;
     const userId = req.user.id;
 
     const etudiant = await Etudiant.findOne({ where: { userId } });
     if (!etudiant) return res.status(404).json({ message: "Étudiant introuvable" });
 
+    // ✅ VÉRIFICATION AVANT INSERTION
+    const dejaEnvoyee = await Candidature.findOne({
+      where: { stageId, etudiantId: etudiant.id }
+    });
+
+    if (dejaEnvoyee) {
+      return res.status(400).json({ message: "Vous avez déjà postulé à ce stage." });
+    }
+
+    // ✅ SI PAS DEJA POSTULÉ, ON CRÉE LA CANDIDATURE
     const candidature = await Candidature.create({
       message,
       cv,
@@ -166,6 +168,7 @@ exports.createCandidature = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
+
 
 exports.getByStage = async (req, res) => {
   try {

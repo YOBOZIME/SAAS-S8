@@ -3,31 +3,19 @@ const { Etudiant, Candidature, Stage, Entreprise, User } = require('../models');
 exports.getMesCandidatures = async (req, res) => {
   try {
     const etudiant = await Etudiant.findOne({ where: { userId: req.user.id } });
-
-    if (!etudiant) {
-      return res.status(404).json({ message: "Profil étudiant introuvable." });
-    }
+    if (!etudiant) return res.status(404).json({ message: 'Étudiant introuvable' });
 
     const candidatures = await Candidature.findAll({
       where: { etudiantId: etudiant.id },
-      include: [
-        {
-          model: Stage,
-          attributes: ['id', 'titre', 'description', 'dateDébut', 'dateFin', 'status']
-        },
-        {
-          model: Entreprise,
-          attributes: ['id', 'nom', 'secteur']
-        }
-      ]
+      include: [{ model: Stage }]
     });
 
-    res.status(200).json(candidatures);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Erreur serveur lors de la récupération des candidatures." });
+    res.json(candidatures);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
+
 exports.postulerStage = async (req, res) => {
   try {
     const { stageId } = req.body;
@@ -85,21 +73,34 @@ exports.getOne = async (req, res) => {
 };
 
 exports.getMyProfile = async (req, res) => {
-  console.log("✅ route /me appelée"); // ← pour vérifier l'appel
-
   try {
     const etudiant = await Etudiant.findOne({
       where: { userId: req.user.id },
-      include: [{ model: User }]
+      include: [{ model: User, attributes: ['nom', 'prenom', 'email'] }]
     });
-
-    if (!etudiant) {
-      return res.status(404).json({ message: "Étudiant non trouvé" });
-    }
-
+    if (!etudiant) return res.status(404).json({ message: 'Étudiant introuvable' });
     res.json(etudiant);
-  } catch (error) {
-    console.error("❌ Erreur dans getMyProfile:", error);  // ← log clair
-    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', error: err.message });
+  }
+};
+
+exports.updatePhoto = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const file = req.file;
+
+    if (!file) return res.status(400).json({ message: "Aucun fichier envoyé." });
+
+    const etudiant = await Etudiant.findOne({ where: { userId } });
+    if (!etudiant) return res.status(404).json({ message: "Étudiant introuvable" });
+
+    etudiant.photo = file.filename;
+    await etudiant.save();
+
+    res.json({ message: "Photo mise à jour", photo: etudiant.photo });
+  } catch (err) {
+    console.error("Erreur updatePhoto:", err);
+    res.status(500).json({ message: "Erreur serveur" });
   }
 };

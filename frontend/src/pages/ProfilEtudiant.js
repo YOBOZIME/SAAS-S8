@@ -1,65 +1,154 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './EntrepriseProfile.css'; // ✅ on réutilise le même style
 
-function ProfilEtudiant() {
-  const [etudiant, setEtudiant] = useState(null);
+const ProfilEtudiant = () => {
+  const [profil, setProfil] = useState(null);
   const [candidatures, setCandidatures] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem('token');
 
-  useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/etudiants/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setProfil(res.data);
+    } catch (err) {
+      console.error('Erreur lors du chargement du profil :', err);
+    }
+  };
+
+  const fetchCandidatures = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/etudiants/mes-candidatures', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setCandidatures(res.data);
+    } catch (err) {
+      console.error('Erreur chargement candidatures :', err);
+    }
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('photo', file);
+
+    try {
+      await axios.patch('http://localhost:5000/api/etudiants/photo', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      await fetchProfile();
+    } catch (err) {
+      console.error('Erreur upload photo :', err);
+    }
+  };
+
+  const handlePhotoChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append("photo", file);
     const token = localStorage.getItem("token");
   
-    const fetchData = async () => {
-      try {
-        const res1 = await axios.get(`http://localhost:5000/api/etudiants/me`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setEtudiant(res1.data);
+    try {
+      await axios.patch("http://localhost:5000/api/etudiants/photo", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      window.location.reload(); // ou refetch le profil
+    } catch (err) {
+      console.error("Erreur upload photo étudiant :", err);
+    }
+  };
   
-        const res2 = await axios.get(`http://localhost:5000/api/candidatures/mine`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setCandidatures(res2.data);
-      } catch (err) {
-        console.error("Erreur lors du chargement du profil :", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    fetchData();
+
+  useEffect(() => {
+    fetchProfile();
+    fetchCandidatures();
   }, []);
 
-  if (loading || !etudiant) return <div>Chargement...</div>;
+  if (!profil) return <p>Chargement...</p>;
 
+  const getStatusClass = (statut) => {
+    switch (statut.toLowerCase()) {
+      case 'acceptée':
+        return 'status accepted';
+      case 'refusée':
+        return 'status rejected';
+      case 'en attente':
+      default:
+        return 'status pending';
+    }
+  };
+  
   return (
-    <div>
-      <h2>Profil Étudiant</h2>
-      <img
-        src="/default-profile.png"
-        alt="Photo de profil"
-        style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-      />
-      <p><strong>Nom :</strong> {etudiant.User.nom}</p>
-      <p><strong>Prénom :</strong> {etudiant.User.prenom}</p>
-      <p><strong>Email :</strong> {etudiant.User.email}</p>
-      <p><strong>Niveau :</strong> {etudiant.niveau}</p>
-      <p><strong>Filière :</strong> {etudiant.filiere}</p>
+    <div className="entreprise-profile">
+      <div className="navbar">
+        <div className="navbar-logo" onClick={() => window.location.href = '/etudiant'}>
+          Intern'<span style={{ color: '#2f486d' }}>Net</span>
+        </div>
+        <div className="navbar-actions">
+          <button onClick={() => {
+            localStorage.clear();
+            window.location.href = '/login';
+          }}>Déconnexion</button>
+        </div>
+      </div>
 
-      <h3>Mes Candidatures</h3>
-      {candidatures.length === 0 ? (
-        <p>Aucune candidature envoyée.</p>
-      ) : (
-        <ul>
-          {candidatures.map(c => (
-            <li key={c.id}>
-              Stage : {c.Stage?.titre} — Statut : {c.statut}
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="profile-container">
+        <div className="profile-left">
+          <img
+            className="profile-pic"
+            src={
+              profil.photo
+                ? `http://localhost:5000/uploads/${profil.photo}?${Date.now()}`
+                : '/default-avatar.png'
+            }
+            alt="Profil"
+          />
+          <div className="file-upload">
+            <label className="upload-button">
+              Choisir une image
+              <input type="file" onChange={handleFileChange} hidden />
+            </label>
+          </div>
+        </div>
+
+        <div className="profile-info">
+          <h2>{profil.User?.prenom} {profil.User?.nom}</h2>
+          <p><strong>Email :</strong> {profil.User?.email}</p>
+          <p><strong>Filière :</strong> {profil.filiere}</p>
+          <p><strong>Niveau :</strong> {profil.niveau}</p>
+        </div>
+      </div>
+
+      <h3 className="section-title">📩 Candidatures Envoyées</h3>
+      <div className="section-cards">
+        {candidatures.length === 0 ? (
+          <p style={{ marginLeft: '40px' }}>Aucune candidature envoyée.</p>
+        ) : (
+          candidatures.map((cand) => (
+            <div className="card" key={cand.id}>
+              <h4>{cand.Stage?.titre}</h4>
+              <p><strong>Domaine:</strong> {cand.Stage?.domaine}</p>
+              <p><strong>Lieu:</strong> {cand.Stage?.lieu}</p>
+              <p><strong>Statut:</strong> <span className={getStatusClass(cand.statut)}>{cand.statut}</span></p>
+              <p><strong>Message:</strong> {cand.message}</p>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
-}
+};
 
 export default ProfilEtudiant;
