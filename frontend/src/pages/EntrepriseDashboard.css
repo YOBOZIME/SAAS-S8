@@ -1,180 +1,161 @@
-/* Conteneur global */
-.dashboard-container {
-    font-family: 'Segoe UI', sans-serif;
-    height: 100vh;
-    background-color: #F4ECDB;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Navbar */
-  .navbar {
-    background-color: #f3eae0;
-    padding: 16px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .navbar-logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #1C274C;
-    cursor: pointer;
-    flex-shrink: 0; /* ✅ empêche le logo de s'étaler */
-    margin-right: auto; /* ✅ pousse le reste vers la droite */
-  }
-  
-  .navbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  
-  
-  .navbar-avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #1C274C;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
-  
-  .navbar-avatar:hover {
-    transform: scale(1.05);
-  }
-  
-  .nav-button {
-    all: unset; /* supprime tous les styles par défaut */
-    display: inline-block;
-    background-color: #1C274C;
-    color: white;
-    border-radius: 6px;
-    padding: 8px 14px;
-    margin-left: 16px;
-    cursor: pointer;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-  }
-  
-  .nav-button:hover {
-    background-color: #16203E;
-  }
-  
-  
-  /* Corps principal */
-  .main-content {
-    display: flex;
-    padding: 24px 32px;
-    gap: 32px;
-  }
-  
-  /* Fil d'actualité */
-  .feed {
-    flex: 3;
-    background-color: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  }
-  
-  .feed h3 {
-    margin-bottom: 16px;
-    color: #1C274C;
-  }
-  
-  .post {
-    padding: 16px;
-    border-bottom: 1px solid #E5E5E5;
-  }
-  
-  /* Style spécifique aux posts de stages */
-.post-stage {
-  background-color: #fdfaf5;
-  border: 1px solid #e2dcd1;
+:root {
+  --bleu: #2f486d;
+  --bleu-fonce: #223148;
+  --beige-clair: #f3eae0;
+  --beige-moyen: #d2c7b8;
+  --fond-global: #faf7f3;
+  --texte-foncé: #2c2c2c;
+}
+
+/* Conteneur principal */
+.entreprise-dashboard {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--fond-global);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAVBAR inchangée */
+.dashboard-header {
+  background-color: var(--beige-clair);
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1C274C;
+  cursor: pointer;
+}
+
+.logo span {
+  color: var(--bleu);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.actions button {
+  background-color: var(--bleu);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.actions button:hover {
+  background-color: var(--bleu-fonce);
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--bleu);
+  cursor: pointer;
+}
+
+/* BODY */
+.dashboard-body {
+  display: flex;
+  padding: 32px;
+  gap: 36px;
+}
+
+/* ✅ Nouvelle suggestion panel améliorée */
+.suggestion-panel {
+  flex: 1;
+  background-color: var(--bleu);
+  padding: 24px;
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.suggestion-panel h4 {
+  margin-bottom: 14px;
+  font-size: 18px;
+}
+
+.suggestion-panel p {
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.btn-publish {
+  background-color: white;
+  color: var(--bleu);
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-publish:hover {
+  background-color: var(--beige-clair);
+}
+
+/* FEED reste comme avant */
+.news-feed {
+  flex: 3;
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--beige-moyen);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+}
+
+.news-feed h3 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: var(--bleu-fonce);
+}
+
+.card {
+  background-color: var(--beige-clair);
+  border: 1px solid var(--beige-moyen);
+  padding: 18px;
   border-radius: 10px;
-  margin-bottom: 16px;
-  padding: 16px;
+  margin-bottom: 18px;
   transition: box-shadow 0.3s ease;
 }
 
-.post-stage:hover {
-  box-shadow: 0 4px 12px rgba(180, 144, 121, 0.2);
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.post-stage p.description {
+.card strong {
+  color: var(--bleu-fonce);
+}
+
+.card p {
+  margin: 6px 0;
+  color: var(--texte-foncé);
+}
+
+.card small {
+  color: #666;
+  font-size: 12px;
+}
+
+.card .description {
   font-style: italic;
-  color: #333;
+  color: #444;
   margin-top: 8px;
 }
-
-
-  .post:last-child {
-    border-bottom: none;
-  }
-  
-  .post strong {
-    color: #B29079;
-  }
-  
-  .post p {
-    margin: 8px 0;
-  }
-  
-  .post small {
-    color: gray;
-  }
-  
-  /* Sidebar */
-  .sidebar {
-    flex: 1;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  }
-  
-  .sidebar h4 {
-    color: #1C274C;
-    margin-bottom: 12px;
-  }
-  
-  .btn-ajouter {
-    margin-top: 12px;
-    padding: 10px 14px;
-    width: 100%;
-    border: none;
-    border-radius: 8px;
-    background-color: #B29079;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-ajouter:hover {
-    background-color: #a27863;
-  }
-
-  .nav-button {
-    background-color: #1C274C;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 14px;
-    margin: 0 8px;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-  }
-  
-  .nav-button:hover {
-    background-color: #16203E;
-  }
-  

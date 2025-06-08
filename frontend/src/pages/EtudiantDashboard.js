@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './EtudiantDashboard.css';
 import { logout } from '../services/authService';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const EtudiantDashboard = () => {
@@ -14,38 +14,53 @@ const EtudiantDashboard = () => {
 
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  const fetchPhoto = async () => {
-    const saved = localStorage.getItem("etudiantPhoto");
-    if (saved) {
-      setPhoto(saved);
-    } else {
-      try {
-        const res = await axios.get("http://localhost:5000/api/etudiants/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (res.data.photo) {
-          const fullUrl = `http://localhost:5000/uploads/${res.data.photo}`;
-          setPhoto(fullUrl);
-          localStorage.setItem("etudiantPhoto", fullUrl);
-        } else {
-          setPhoto('/default-avatar.png');
-        }
-      } catch (err) {
-        console.error("Erreur chargement photo étudiant :", err);
-        setPhoto('/default-avatar.png');
-      }
-    }
-  };
-  
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
+  const fetchPhoto = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/etudiants/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.data.photo) {
+        const fullUrl = `http://localhost:5000/uploads/${res.data.photo}`;
+        setPhoto(fullUrl);
+      } else {
+        setPhoto('/default-avatar.png');
+      }
+    } catch (err) {
+      console.error("Erreur chargement photo étudiant :", err);
+      setPhoto('/default-avatar.png');
+    }
+  };
+
+  const fetchCandidatures = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/candidatures/mes", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const stageIds = res.data.map(c => c.Stage?.id || c.stageId);
+      setAppliedStages(stageIds);
+    } catch (err) {
+      console.error("Erreur chargement candidatures", err);
+    }
+  };
+
+  const fetchStages = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/stages");
+      setOffers(res.data);
+    } catch (err) {
+      console.error("Erreur chargement des stages", err);
+    }
+  };
+
   const handleApplyClick = () => {
     if (appliedStages.includes(selectedOffer.id)) {
-      alert("❗ Vous avez déjà envoyé votre candidature pour ce stage.");
+      alert("❗ Vous avez déjà postulé à ce stage.");
       return;
     }
     setShowModal(true);
@@ -72,7 +87,7 @@ const EtudiantDashboard = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      alert("✅ Candidature envoyée avec succès !");
+      alert("✅ Candidature envoyée !");
       setAppliedStages([...appliedStages, selectedOffer.id]);
       setShowModal(false);
       setForm({ message: '', cv: null });
@@ -85,55 +100,32 @@ const EtudiantDashboard = () => {
     }
   };
 
-  const fetchCandidatures = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/candidatures/mes", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const stageIds = res.data.map(c => c.Stage?.id || c.stageId);
-      setAppliedStages(stageIds);
-    } catch (err) {
-      console.error("Erreur chargement candidatures", err);
-    }
-  };
-
-  const fetchStages = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/stages");
-      setOffers(res.data);
-    } catch (err) {
-      console.error("Erreur chargement des stages", err);
-    }
-  };
-
   useEffect(() => {
     const loadData = async () => {
       await fetchPhoto();
-      await fetchCandidatures(); // d'abord les candidatures
-      await fetchStages();       // ensuite les stages
+      await fetchCandidatures();
+      await fetchStages();
     };
-  
     loadData();
   }, []);
 
   return (
     <div className="etudiant-dashboard">
       <nav className="navbar">
-  <div className="navbar-logo" onClick={() => navigate('/etudiant')}>
-    Intern'<span style={{ color: '#2f486d' }}>Net</span>
-  </div>
+        <div className="navbar-logo" onClick={() => navigate('/etudiant')}>
+          Intern'<span style={{ color: '#2f486d' }}>Net</span>
+        </div>
 
-  <div className="navbar-actions">
-    <button onClick={handleLogout}>Déconnexion</button>
-    <img
-      src={photo || '/default-avatar.png'}
-      alt="Profil"
-      className="navbar-avatar"
-      onClick={() => navigate('/profil')}
-    />
-  </div>
-</nav>
-
+        <div className="navbar-actions">
+          <button onClick={handleLogout}>Déconnexion</button>
+          <img
+            src={photo || '/default-avatar.png'}
+            alt="Profil"
+            className="navbar-avatar"
+            onClick={() => navigate('/profil')}
+          />
+        </div>
+      </nav>
 
       <div className="dashboard-main">
         <aside className="offre-liste">
@@ -182,7 +174,6 @@ const EtudiantDashboard = () => {
         </section>
       </div>
 
-      {/* MODAL */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
