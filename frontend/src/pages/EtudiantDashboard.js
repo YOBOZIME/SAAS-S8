@@ -12,7 +12,7 @@ const EtudiantDashboard = () => {
   const [appliedStages, setAppliedStages] = useState([]);
   const [photo, setPhoto] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
@@ -107,9 +107,12 @@ const EtudiantDashboard = () => {
       await fetchPhoto();
       await fetchCandidatures();
       await fetchStages();
+      setLoading(false);
     };
     loadData();
   }, []);
+
+  if (loading) return <p style={{ textAlign: 'center', marginTop: '40px' }}>Chargement...</p>;
 
   return (
     <div className="etudiant-dashboard">
@@ -162,7 +165,6 @@ const EtudiantDashboard = () => {
               onClick={() => setSelectedOffer(offer)}
             >
               <h3>{offer.titre}</h3>
-              <p><strong>Entreprise:</strong> {offer.entreprise?.nomSociete || 'N/A'}</p>
               <p><strong>Lieu:</strong> {offer.lieu}</p>
               <p><strong>Domaine:</strong> {offer.domaine}</p>
               <p><strong>Période:</strong> {offer.dateDebut?.slice(0, 10)} - {offer.dateFin?.slice(0, 10)}</p>

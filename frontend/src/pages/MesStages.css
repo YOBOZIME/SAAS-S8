@@ -16,22 +16,20 @@ body {
 
 .mes-stages-container {
   padding: 40px 60px;
-  min-height: 100vh;
   background-color: var(--light-beige);
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .navbar-top {
-  background-color: var(--light-beige); /* anciennement: var(--white) */
+  background-color: var(--light-beige);
   padding: 20px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-radius: 12px;
-  box-shadow: none;
-  margin-bottom: 30px;
   border-bottom: 1px solid #d6cabd;
+  margin-bottom: 30px;
 }
-
 
 .navbar-brand {
   font-size: 28px;
@@ -53,19 +51,42 @@ body {
 }
 
 .stages-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 🔥 3 colonnes fixes */
-  gap: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px; /* ✅ plus d'espace entre les cartes */
+  max-width: 1200px;
+  margin: 0 auto;
 }
+
 
 .stage-card {
   background-color: var(--white);
-  padding: 24px;
-  border-radius: 16px;
-  border-left: 5px solid var(--primary-blue);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 4px solid var(--primary-blue);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
 }
+
+
+@media (max-width: 1024px) {
+  .stages-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stages-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+
 
 .stage-card:hover {
   transform: translateY(-4px);
@@ -91,12 +112,9 @@ body {
 .btn-group {
   margin-top: 18px;
   display: flex;
-  gap: 12px;
-  flex-wrap: nowrap; /* ⚠️ Force une seule ligne */
-  justify-content: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-
-
 
 .stage-card button {
   padding: 6px 12px;
@@ -106,17 +124,12 @@ body {
   font-size: 13px;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: fit-content;
   white-space: nowrap;
   display: flex;
   align-items: center;
   gap: 5px;
-  min-width: fit-content;
 }
 
-
-
-/* Boutons */
 .edit-btn {
   background-color: var(--primary-blue);
   color: var(--white);
