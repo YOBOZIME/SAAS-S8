@@ -69,6 +69,24 @@ const EntrepriseDashboard = () => {
     navigate('/entreprise/profil');
   };
 
+  const handleStatusChange = async (id, nouveauStatut) => {
+    const token = localStorage.getItem('token');
+    try {
+      await axios.patch(`http://localhost:5000/api/stages/${id}/status`, 
+        { status: nouveauStatut }, 
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+      alert(`Stage ${nouveauStatut}`);
+      // recharger les stages
+      window.location.reload();
+    } catch (error) {
+      console.error("Erreur mise à jour statut :", error);
+    }
+  };
+  
+
   return (
     <div className="entreprise-dashboard">
       <header className="dashboard-header">

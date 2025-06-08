@@ -31,19 +31,23 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   console.log("📩 Données reçues :", req.body);
-
   console.log("🔁 login route hit");
+
   try {
     const { email, motdepasse } = req.body;
 
     const user = await User.findOne({ where: { email } });
     if (!user) return res.status(404).json({ message: 'Utilisateur introuvable' });
 
+    if (!user.actif) {
+      return res.status(403).json({ message: 'Votre compte est désactivé. Veuillez contacter l\'administrateur.' });
+    }
+
     const isMatch = await bcrypt.compare(motdepasse, user.motdepasse);
     if (!isMatch) return res.status(401).json({ message: 'Mot de passe incorrect' });
 
     const token = jwt.sign(
-      { id: user.id, role: user.role }, // ← ⚠️ ici, il faut absolument inclure le `role`
+      { id: user.id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );

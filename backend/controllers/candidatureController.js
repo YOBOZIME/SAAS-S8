@@ -70,10 +70,30 @@ exports.updateStatus = async (req, res) => {
       return res.status(404).json({ message: "Candidature introuvable." });
     }
 
-    candidature.statut = statut; // ✅ correction ici
+    // 🔄 Met à jour la candidature
+    candidature.statut = statut;
     await candidature.save();
 
-    res.status(200).json({ message: "Statut mis à jour.", candidature });
+    // 🔍 Récupère toutes les candidatures du même stage
+    const toutes = await Candidature.findAll({ where: { stageId: candidature.stageId } });
+
+    const auMoinsUneAcceptee = toutes.some(c => c.statut === 'acceptée');
+    const toutesRefusees = toutes.every(c => c.statut === 'refusée');
+
+    // 🔧 Met à jour le statut du stage selon le cas
+    const stage = await Stage.findByPk(candidature.stageId);
+    if (stage) {
+      if (auMoinsUneAcceptee) {
+        stage.status = 'validé';
+      } else if (toutesRefusees) {
+        stage.status = 'refusé';
+      } else {
+        stage.status = 'en attente';
+      }
+      await stage.save();
+    }
+
+    res.status(200).json({ message: "Statut de la candidature et du stage mis à jour.", candidature });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Erreur serveur." });

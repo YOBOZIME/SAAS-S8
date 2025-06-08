@@ -2,6 +2,7 @@ const Stage = require('../models/Stage');
 const Entreprise = require('../models/Entreprise'); // ✅ AJOUT ICI
 const Publication = require('../models/Publication'); // ✅ à importer
 const { Op } = require('sequelize');
+const { Candidature, Etudiant, User } = require('../models'); // ajoute Candidature, Etudiant, User
 
 exports.createStage = async (req, res) => {
   try {
@@ -53,13 +54,43 @@ exports.updateStage = async (req, res) => {
 
 exports.getAllStages = async (req, res) => {
   try {
-    const stages = await Stage.findAll();
+    const { statut } = req.query;
+    const whereClause = statut ? { status: statut } : {};
+
+    // Choix du statut de candidature à inclure
+    let statutCandidature = null;
+    if (statut === 'validé') statutCandidature = 'acceptée';
+    if (statut === 'refusé') statutCandidature = 'refusée';
+
+    const stages = await Stage.findAll({
+      where: whereClause,
+      include: [
+        {
+          model: Entreprise,
+          attributes: ['nomSociete']
+        },
+        {
+          model: Candidature,
+          where: statutCandidature ? { statut: statutCandidature } : undefined,
+          required: false,
+          include: {
+            model: Etudiant,
+            include: {
+              model: User,
+              attributes: ['prenom', 'nom', 'email']
+            }
+          }
+        }
+      ]
+    });
+
     res.json(stages);
   } catch (err) {
-    console.error("Erreur dans getAllStages:", err); // ✅ Ajoute ceci pour voir l'erreur réelle
+    console.error("Erreur dans getAllStages:", err);
     res.status(500).json({ message: 'Erreur serveur', error: err.message });
   }
 };
+
 
 
 exports.removeStage = async (req, res) => {
@@ -99,4 +130,26 @@ exports.getStagesOfOtherEntreprises = async (currentEntrepriseId) => {
 
   console.log("Stages found for other entreprises:", stages.length);
   return stages;
+};
+
+
+exports.updateStageStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!['en attente', 'validé', 'refusé'].includes(status)) {
+      return res.status(400).json({ message: "Statut invalide" });
+    }
+
+    const stage = await Stage.findByPk(id);
+    if (!stage) return res.status(404).json({ message: "Stage non trouvé" });
+
+    stage.status = status;
+    await stage.save();
+
+    res.json({ message: "Statut mis à jour", stage });
+  } catch (err) {
+    res.status(500).json({ message: "Erreur serveur", error: err.message });
+  }
 };

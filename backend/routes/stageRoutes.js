@@ -12,6 +12,8 @@ router.put('/:id', verifyToken, checkRole(['entreprise']), controller.updateStag
 router.delete('/:id', verifyToken, checkRole(['entreprise']), controller.removeStage);
 router.get('/', controller.getAllStages);
 router.get('/mine', verifyToken, checkRole(['entreprise']), controller.getMyStages);
+router.patch('/:id/status', verifyToken, checkRole(['admin']), controller.updateStageStatus);
+router.patch('/:id/status', verifyToken, checkRole(['entreprise']), controller.updateStageStatus);
 
 router.get('/others', verifyToken, checkRole(['entreprise']), async (req, res) => {
     try {

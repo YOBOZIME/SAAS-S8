@@ -25,19 +25,50 @@ const CandidaturesStage = () => {
     fetchCandidatures();
   }, [id]);
 
-  const updateStatus = async (candidatureId, status) => {
+  const updateStatus = async (candidatureId, statut) => {
     try {
       const token = localStorage.getItem('token');
+  
+      // 1. Met à jour la candidature
       await axios.patch(`http://localhost:5000/api/candidatures/${candidatureId}/status`, {
-        statut: status
+        statut
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      fetchCandidatures();
+  
+      // 2. Recharge les candidatures
+      const res = await axios.get(`http://localhost:5000/api/candidatures/stage/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      const updatedCandidatures = res.data;
+      setCandidatures(updatedCandidatures);
+  
+      // 3. Déterminer le nouveau statut du stage
+      const hasAccepted = updatedCandidatures.some(c => c.statut === 'acceptée');
+      const allRefused = updatedCandidatures.every(c => c.statut === 'refusée');
+  
+      let stageStatus = null;
+      if (hasAccepted) {
+        stageStatus = 'validé';
+      } else if (allRefused) {
+        stageStatus = 'refusé';
+      }
+  
+      // 4. Met à jour le statut du stage si nécessaire
+      if (stageStatus) {
+        await axios.patch(`http://localhost:5000/api/stages/${id}/status`, {
+          status: stageStatus
+        }, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      }
+  
     } catch (err) {
       console.error("Erreur mise à jour du statut :", err);
     }
   };
+  
 
   return (
     <div className="candidature-page">

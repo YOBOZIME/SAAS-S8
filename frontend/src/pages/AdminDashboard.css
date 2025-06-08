@@ -1,42 +1,207 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f3eae0;
+}
+
+.navbar {
+  background-color: #ffffff;
+  color: #2f486d;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-logo {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.navbar-actions button {
+  background-color: #2f486d;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.navbar-actions button:hover {
+  background-color: #223148;
+}
+
 .admin-dashboard {
-    padding: 30px;
-    font-family: 'Segoe UI', sans-serif;
-  }
-  
-  .admin-dashboard h2 {
-    color: #1C274C;
-  }
-  
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.admin-dashboard h3 {
+  margin-top: 20px;
+  margin-bottom: 12px;
+  color: #2f486d;
+  font-size: 20px;
+}
+
+.stat-box {
+  background-color: #d2c7b8;
+  padding: 18px;
+  border-radius: 12px;
+  flex: 1 1 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.stat-box button {
+  background-color: #2f486d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.stat-box button:hover {
+  background-color: #223148;
+}
+
+
+h2 {
+  font-size: 26px;
+  color: #2f486d;
+  margin-bottom: 20px;
+}
+
+.dashboard-main {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.stats p {
+  flex: 1 1 200px;
+  background-color: #d2c7b8;
+  color: #223148;
+  padding: 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  min-width: 220px;
+}
+
+
+h3 {
+  color: #2f486d;
+  margin-bottom: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+thead {
+  background-color: #2f486d;
+  color: white;
+}
+
+th, td {
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 15px;
+}
+
+tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+tbody tr:hover {
+  background-color: #f3eae0;
+}
+
+td button {
+  background-color: #2f486d;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+td button:hover {
+  background-color: #1e2d44;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
   .stats {
-    background-color: #EFE7DA;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 30px;
+    flex-direction: column;
   }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+
+  th, td {
+    font-size: 13px;
+    padding: 10px;
   }
-  
-  table th, table td {
-    padding: 12px;
-    border-bottom: 1px solid #ccc;
-    text-align: left;
+
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
   }
-  
-  button {
-    background-color: #1C274C;
-    color: #EFE7DA;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #16203E;
-  }
-  
+}
+
+.stat-card {
+  background-color: #d2c7b8;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+  min-width: 220px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.stat-card button {
+  background-color: #2f486d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.stat-card button:hover {
+  background-color: #223148;
+}

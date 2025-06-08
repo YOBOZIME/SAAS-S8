@@ -26,7 +26,9 @@ const Login = () => {
       else if (role === "admin") navigate("/admin");
     } catch (err) {
       console.error("Erreur de connexion :", err.response?.data || err.message);
-      alert("Email ou mot de passe incorrect !");
+      const msg = err.response?.data?.message || "Erreur inconnue";
+      alert(msg);
+
     }
   };
 
