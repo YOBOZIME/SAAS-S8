@@ -11,6 +11,8 @@ const EtudiantDashboard = () => {
   const [form, setForm] = useState({ message: '', cv: null });
   const [appliedStages, setAppliedStages] = useState([]);
   const [photo, setPhoto] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
 
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
@@ -124,13 +126,36 @@ const EtudiantDashboard = () => {
             className="navbar-avatar"
             onClick={() => navigate('/profil')}
           />
+          
+
         </div>
       </nav>
 
       <div className="dashboard-main">
         <aside className="offre-liste">
-          <h2>📋 Liste des offres</h2>
-          {offers.map((offer, index) => (
+          <h2>Liste des offres</h2>
+          <div className="search-wrapper">
+  <span className="search-icon">🔍</span>
+  <input
+    type="text"
+    className="search-input"
+    placeholder="Rechercher un stage..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+  />
+</div>
+
+          {offers
+  .filter((offer) => {
+    const keyword = searchTerm.toLowerCase();
+    return (
+      offer.titre.toLowerCase().includes(keyword) ||
+      offer.domaine.toLowerCase().includes(keyword)
+    );
+    
+  })
+  .map((offer, index) => (
+
             <div
               key={index}
               className={`offre-item ${selectedOffer === offer ? 'active' : ''}`}

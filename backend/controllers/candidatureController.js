@@ -103,12 +103,13 @@ exports.getCandidaturesEntreprise = async (req, res) => {
     if (!entreprise) return res.status(404).json({ message: 'Entreprise non trouvée' });
 
     const candidatures = await Candidature.findAll({
-      where: { entrepriseId: entreprise.id },
-      include: [
-        { model: Stage },
-        { model: Etudiant }
-      ]
+      where: { etudiantId: etudiant.id },
+      include: [{
+        model: Stage,
+        required: true  // 💡 n'inclut que les stages encore existants
+      }]
     });
+    
 
     res.status(200).json(candidatures);
   } catch (error) {

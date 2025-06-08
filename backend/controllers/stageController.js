@@ -68,7 +68,7 @@ exports.removeStage = async (req, res) => {
     const stage = await Stage.findByPk(id);
     if (!stage) return res.status(404).json({ message: 'Stage non trouvé' });
 
-    await stage.destroy();
+    await stage.destroy({ force: true });
     res.json({ message: 'Stage supprimé' });
   } catch (error) {
     res.status(500).json({ error: error.message });
