@@ -43,22 +43,25 @@ const Login = () => {
           <p className="login-subtitle">Connectez-vous pour accéder à votre espace personnel</p>
 
           <form onSubmit={handleSubmit} className="login-form" autoComplete="off">
-            <input
-              type="email"
-              name="user_email"
-              placeholder="Email"
-              value={credentials.user_email}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="password"
-              name="user_password"
-              placeholder="Mot de passe"
-              value={credentials.user_password}
-              onChange={handleChange}
-              required
-            />
+          <input
+  type="email"
+  name="user_email"
+  placeholder="Email"
+  autoComplete="new-email"
+  value={credentials.user_email}
+  onChange={handleChange}
+  required
+/>
+<input
+  type="password"
+  name="user_password"
+  placeholder="Mot de passe"
+  autoComplete="new-password"
+  value={credentials.user_password}
+  onChange={handleChange}
+  required
+/>
+
             <button type="submit" className="login-button">Se connecter</button>
           </form>
 

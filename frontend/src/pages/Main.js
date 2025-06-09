@@ -18,8 +18,7 @@ const Main = () => {
           <h2>Créer un compte</h2>
           <p>Choisissez votre rôle pour commencer :</p>
           <div className="btn-group">
-            <button onClick={() => navigate('/register')} className="btn-primary">Inscription Étudiant</button>
-            <button onClick={() => navigate('/register')} className="btn-primary">Inscription Entreprise</button>
+            <button onClick={() => navigate('/register')} className="btn-primary">Inscription</button>
           </div>
         </div>
       </div>

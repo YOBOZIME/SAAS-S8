@@ -9,6 +9,21 @@ const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    }
+
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      navigate('/login');
+    };
+
+    fetchUsers();
+    fetchStats();
+  }, []);
+
   const fetchUsers = async () => {
     const token = localStorage.getItem('token');
     const res = await axios.get('http://localhost:5000/api/admin/users', {

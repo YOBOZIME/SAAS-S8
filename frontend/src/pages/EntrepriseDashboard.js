@@ -3,6 +3,7 @@ import axios from 'axios';
 import { logout } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 import './EntrepriseDashboard.css';
+import defaultImg from '../assets/Img.png';
 
 const EntrepriseDashboard = () => {
   const [photo, setPhoto] = useState(null);
@@ -25,7 +26,7 @@ const EntrepriseDashboard = () => {
           if (res.data.photo) {
             setPhoto(`http://localhost:5000/uploads/${res.data.photo}`);
           } else {
-            setPhoto('/default-avatar.png');
+            setPhoto(defaultImg);
           }
         } catch (err) {
           console.error("Erreur chargement photo :", err);
@@ -97,7 +98,7 @@ const EntrepriseDashboard = () => {
           <button onClick={() => navigate('/mes-stages')}>Mes Offres</button>
           <button onClick={handleLogout}>Déconnexion</button>
           <img
-            src={photo || '/default-avatar.png'}
+            src={photo || defaultImg}
             alt="Profil"
             className="avatar"
             onClick={handleProfil}

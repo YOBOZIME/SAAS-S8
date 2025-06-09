@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ModifierStage.css';
 
-
 const ModifierStage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,7 +33,15 @@ const ModifierStage = () => {
 
   return (
     <div className="modifier-stage-container">
+      <div className="modifier-navbar">
+        <div className="navbar-logo" onClick={() => navigate('/mes-stages')}>
+          Intern'<span style={{ color: '#2f486d' }}>Net</span>
+        </div>
+      </div>
+
+
       <h2>📝 Modifier Stage</h2>
+
       <form onSubmit={handleSubmit} className="stage-form">
         <label>Titre :</label>
         <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} required />
@@ -51,9 +58,7 @@ const ModifierStage = () => {
         <label>Date fin :</label>
         <input type="date" value={dateFin} onChange={(e) => setDateFin(e.target.value)} required />
 
-        <button type="submit" style={{ marginTop: '20px', background: '#2f486d', color: 'white', padding: '10px 18px', borderRadius: '6px', border: 'none', cursor: 'pointer' }}>
-          💾 Enregistrer
-        </button>
+        <button type="submit">💾 Enregistrer</button>
       </form>
     </div>
   );

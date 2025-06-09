@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './EntrepriseProfile.css'; // ✅ on réutilise le même style
+import defaultImg from '../assets/Img.png';
 
 const ProfilEtudiant = () => {
   const [profil, setProfil] = useState(null);
@@ -111,8 +112,9 @@ const ProfilEtudiant = () => {
             src={
               profil.photo
                 ? `http://localhost:5000/uploads/${profil.photo}?${Date.now()}`
-                : '/default-avatar.png'
+                : defaultImg
             }
+            
             alt="Profil"
           />
           <div className="file-upload">

@@ -53,7 +53,7 @@ const MesStages = () => {
     <div className="mes-stages-container">
       <div className="navbar-top">
         <div className="navbar-brand" onClick={() => navigate('/entreprise')}>
-          StageConnect
+          Inter'Net
         </div>
       </div>
 

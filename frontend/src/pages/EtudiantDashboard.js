@@ -3,6 +3,7 @@ import './EtudiantDashboard.css';
 import { logout } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import defaultImg from '../assets/Img.png';
 
 const EtudiantDashboard = () => {
   const [offers, setOffers] = useState([]);
@@ -28,11 +29,11 @@ const EtudiantDashboard = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.data.photo) {
-        const fullUrl = `http://localhost:5000/uploads/${res.data.photo}`;
-        setPhoto(fullUrl);
+        setPhoto(`http://localhost:5000/uploads/${res.data.photo}`);
       } else {
-        setPhoto('/default-avatar.png');
+        setPhoto(defaultImg); // utilise l'image locale
       }
+      
     } catch (err) {
       console.error("Erreur chargement photo étudiant :", err);
       setPhoto('/default-avatar.png');
